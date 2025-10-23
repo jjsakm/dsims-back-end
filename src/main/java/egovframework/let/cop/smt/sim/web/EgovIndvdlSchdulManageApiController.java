@@ -133,7 +133,12 @@ public class EgovIndvdlSchdulManageApiController {
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("searchMonth", sSearchDate);
 		paramMap.put("searchMode", "MONTH");
-		
+
+		// 일정 구분 필터링 추가
+		if (searchVO.getSchdulSe() != null && !searchVO.getSchdulSe().isEmpty()) {
+			paramMap.put("schdulSe", searchVO.getSchdulSe());
+		}
+
 		resultMap.put("resultList", egovIndvdlSchdulManageService.selectIndvdlSchdulManageRetrieve(paramMap));
 		resultMap.put("prevRequest", paramMap);
 		
@@ -441,6 +446,11 @@ public class EgovIndvdlSchdulManageApiController {
 		paramMap.put("searchMode", "DAILY");
 		paramMap.put("searchDay", strSearchDay);
 
+		// 일정 구분 필터링 추가
+		if (searchVO.getSchdulSe() != null && !searchVO.getSchdulSe().isEmpty()) {
+			paramMap.put("schdulSe", searchVO.getSchdulSe());
+		}
+
 		resultMap.put("year", iNowYear);
 		resultMap.put("month", iNowMonth);
 		resultMap.put("day", iNowDay);
@@ -519,10 +529,15 @@ public class EgovIndvdlSchdulManageApiController {
 		String schdulEndde = dateFormat.format(calNext.getTime());
 		
 		Map<String, Object> paramMap = new HashMap<>();
-		
+
 		paramMap.put("searchMode", "WEEK");
 		paramMap.put("schdulBgnde", schdulBgnde);
 		paramMap.put("schdulEndde", schdulEndde);
+
+		// 일정 구분 필터링 추가
+		if (searchVO.getSchdulSe() != null && !searchVO.getSchdulSe().isEmpty()) {
+			paramMap.put("schdulSe", searchVO.getSchdulSe());
+		}
 
 		resultMap.put("resultList", egovIndvdlSchdulManageService.selectIndvdlSchdulManageRetrieve(paramMap));
 

@@ -27,6 +27,9 @@ public class ScheduleSearchVO {
     @Schema(description = "검색어", example = "회의")
     private String searchKeyword;
 
+    @Schema(description = "일정 구분 (1:회의, 2:세미나, 3:강의, 4:교육, 5:기타)", example = "1")
+    private String schdulSe;
+
     // 일별 검색 시 사용할 전체일자 (yyyyMMdd)
     @Schema(description = "일별 조회용 검색일자 (yyyyMMdd)", example = "20250507")
     private String searchDay;
