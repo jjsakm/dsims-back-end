@@ -67,6 +67,8 @@ public class EgovMainApiController {
 	public ResultVO getMgtMainPage()
 	  throws Exception{
 
+		System.out.println("11111111111111111111111111111");
+
 		ResultVO resultVO = new ResultVO();
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mberManageDAO">
+
+	
+	<select id="selectTest"  resultType="Map">
+        SELECT
+            com_group_cd,
+            cd_group_nm,
+            cd_group_expln,
+            cd_group_abbr_nm,
+            cd_group_rsvt_cn1,
+            cd_group_rsvt_cn2,
+            cd_group_rsvt_cn3,
+            cd_group_rsvt_cn4,
+            cd_group_rsvt_cn5,
+            reg_dt,
+            rgtr_id,
+            mdfcn_dt,
+            mdfr_id
+        FROM
+            "TB_CA_C_GROUP_CODE"
+   	</select>
+</mapper>
