@@ -5,6 +5,7 @@ import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import egovframework.com.edoc.clsf.domain.model.DocumentClassificationSearchVO;
 import egovframework.com.edoc.clsf.domain.model.DocumentClassificationVO;
 import egovframework.com.edoc.clsf.domain.repository.DocumentClassificationMapper;
 import egovframework.com.edoc.clsf.enums.DocumentClassificationDivCode;
@@ -30,5 +31,15 @@ public class DocumentClassificationServiceImpl extends EgovAbstractServiceImpl  
 	@Override
 	public List<DocumentClassificationVO> getChildren(String parentNo) {
 		return documentClassificationMapper.selectListByParentNo(parentNo);
+	}
+
+	@Override
+	public List<DocumentClassificationVO> selectList(DocumentClassificationSearchVO searchVO) {
+		return documentClassificationMapper.selectList(searchVO);
+	}
+
+	@Override
+	public int selectListTotCnt(DocumentClassificationSearchVO searchVO) {
+		return documentClassificationMapper.selectListTotCnt(searchVO);
 	}
 }

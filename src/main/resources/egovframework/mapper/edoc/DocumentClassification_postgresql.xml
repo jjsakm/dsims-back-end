@@ -27,6 +27,9 @@
 		dc.rgtr_id, 
 		dc.mdfcn_ymd, 
 		dc.mdfr_id,
+		dcnm.doc_lclsf_no,
+		dcnm.doc_mclsf_no,
+		dcnm.doc_sclsf_no,
 		dcnm.doc_lclsf_nm,
 		dcnm.doc_mclsf_nm,
 		dcnm.doc_sclsf_nm
@@ -35,12 +38,12 @@
 	<sql id="fromTables">
 		tb_dr_m_doc_clsf AS dc
 		LEFT JOIN 
-		(WITH RECURSIVE cte(doc_clsf_no, doc_clsf_se_cd, up_doc_clsf_no, doc_clsf_nm_arr) AS (
-			SELECT t.doc_clsf_no, t.doc_clsf_se_cd, t.up_doc_clsf_no, CAST(ARRAY[t.doc_clsf_nm] AS text[]) AS doc_clsf_nm_arr FROM tb_dr_m_doc_clsf AS t 
+		(WITH RECURSIVE cte(doc_clsf_no, doc_clsf_se_cd, up_doc_clsf_no, doc_clsf_no_arr, doc_clsf_nm_arr) AS (
+			SELECT t.doc_clsf_no, t.doc_clsf_se_cd, t.up_doc_clsf_no, CAST(ARRAY[t.doc_clsf_no] AS text[]) AS doc_clsf_no_arr, CAST(ARRAY[t.doc_clsf_nm] AS text[]) AS doc_clsf_nm_arr FROM tb_dr_m_doc_clsf AS t 
 			UNION ALL
-			SELECT cte.doc_clsf_no, p.doc_clsf_se_cd, p.up_doc_clsf_no, cte.doc_clsf_nm_arr || p.doc_clsf_nm FROM tb_dr_m_doc_clsf AS p JOIN cte ON p.doc_clsf_no=cte.up_doc_clsf_no
+			SELECT cte.doc_clsf_no, p.doc_clsf_se_cd, p.up_doc_clsf_no, cte.doc_clsf_no_arr || p.doc_clsf_no, cte.doc_clsf_nm_arr || p.doc_clsf_nm FROM tb_dr_m_doc_clsf AS p JOIN cte ON p.doc_clsf_no=cte.up_doc_clsf_no
 			) 
-		SELECT cte.doc_clsf_no, doc_clsf_nm_arr[1] AS doc_lclsf_nm, doc_clsf_nm_arr[2] AS doc_mclsf_nm, doc_clsf_nm_arr[3] AS doc_sclsf_nm FROM cte WHERE cte.doc_clsf_se_cd='L'
+		SELECT cte.doc_clsf_no,  doc_clsf_no_arr[CARDINALITY(doc_clsf_no_arr)] AS doc_lclsf_no, doc_clsf_no_arr[CARDINALITY(doc_clsf_no_arr)-1] AS doc_mclsf_no, doc_clsf_no_arr[CARDINALITY(doc_clsf_no_arr)-2] AS doc_sclsf_no, doc_clsf_nm_arr[CARDINALITY(doc_clsf_no_arr)] AS doc_lclsf_nm, doc_clsf_nm_arr[CARDINALITY(doc_clsf_no_arr)-1] AS doc_mclsf_nm, doc_clsf_nm_arr[CARDINALITY(doc_clsf_no_arr)-2] AS doc_sclsf_nm FROM cte WHERE cte.doc_clsf_se_cd='L'
 		) AS dcnm ON dc.doc_clsf_no=dcnm.doc_clsf_no
 	</sql>
 
@@ -73,5 +76,72 @@
 			<include refid="fromTables"/>
 		WHERE
 			dc.up_doc_clsf_no = #{parentNo}
- 	</select> 	
+ 	</select> 	 	
+
+ 	<select id="selectList" parameterType="egovframework.com.edoc.clsf.domain.model.DocumentClassificationSearchVO" resultType="egovframework.com.edoc.clsf.domain.model.DocumentClassificationVO">
+		SELECT
+			<include refid="fields"/>
+		FROM
+			<include refid="fromTables"/>
+		WHERE
+			1=1
+			<if test="docLclsfNo != null and docLclsfNo != ''">
+				AND dcnm.doc_lclsf_no = #{docLclsfNo}
+			</if>
+			<if test="docMclsfNo != null and docMclsfNo != ''">
+				AND dcnm.doc_mclsf_no = #{docMclsfNo}
+			</if>
+			<if test="docSclsfNo != null and docSclsfNo != ''">
+				AND dcnm.doc_sclsf_no = #{docSclsfNo}
+			</if>
+			<if test="docClsfNm != null and docClsfNm != ''">
+				AND (
+				 	dcnm.doc_lclsf_nm LIKE CONCAT('%', #{docClsfNm}, '%')
+				 		OR
+				 	dcnm.doc_mclsf_nm LIKE CONCAT('%', #{docClsfNm}, '%')
+				 		OR
+				 	dcnm.doc_sclsf_nm LIKE CONCAT('%', #{docClsfNm}, '%')
+				)
+			</if>
+			<if test="prvcInclYn != null and prvcInclYn != ''">
+				AND dc.prvc_incl_yn = #{prvcInclYn}
+			</if>
+			<if test="useEn != null and useEn != ''">
+				AND dc.use_en = #{useEn}
+			</if>
+ 	</select>
+
+	<select id="selectListTotCnt" parameterType="egovframework.com.edoc.clsf.domain.model.DocumentClassificationSearchVO" resultType="int">
+
+			SELECT 
+				COUNT(*) totcnt
+			FROM
+				<include refid="fromTables"/>
+			WHERE
+				1=1
+				<if test="docLclsfNo != null and docLclsfNo != ''">
+					AND dcnm.doc_lclsf_no = #{docLclsfNo}
+				</if>
+				<if test="docMclsfNo != null and docMclsfNo != ''">
+					AND dcnm.doc_mclsf_no = #{docMclsfNo}
+				</if>
+				<if test="docSclsfNo != null and docSclsfNo != ''">
+					AND dcnm.doc_sclsf_no = #{docSclsfNo}
+				</if>
+				<if test="docClsfNm != null and docClsfNm != ''">
+					AND (
+					 	dcnm.doc_lclsf_nm LIKE CONCAT('%', #{docClsfNm}, '%')
+					 		OR
+					 	dcnm.doc_mclsf_nm LIKE CONCAT('%', #{docClsfNm}, '%')
+					 		OR
+					 	dcnm.doc_sclsf_nm LIKE CONCAT('%', #{docClsfNm}, '%')
+					)
+				</if>
+				<if test="prvcInclYn != null and prvcInclYn != ''">
+					AND dc.prvc_incl_yn = #{prvcInclYn}
+				</if>
+				<if test="useEn != null and useEn != ''">
+					AND dc.use_en = #{useEn}
+				</if>
+	</select>
 </mapper>

@@ -31,6 +31,15 @@ public class DocumentClassificationVO implements Serializable {
 	@Schema(description = "상위문서분류 번호", example="")
 	private String upDocClsfNo;
 	
+	@Schema(description = "대분류 번호", example="")
+	private String docLclsfNo;
+	
+	@Schema(description = "중분류 번호", example="")
+	private String docMclsfNo;
+
+	@Schema(description = "소분류 번호", example="")
+    private String docSclsfNo;
+	
 	@Schema(description = "대분류명", example="")
 	private String docLclsfNm;
 	
