@@ -17,20 +17,31 @@
 	</resultMap>
 	
 	<sql id="fields">
-		doc_clsf_no, 
-		doc_clsf_se_cd, 
-		doc_clsf_nm, 
-		up_doc_clsf_no, 
-		prvc_incl_yn, 
-		use_en, 
-		reg_ymd, 
-		rgtr_id, 
-		mdfcn_ymd, 
-		mdfr_id
+		dc.doc_clsf_no, 
+		dc.doc_clsf_se_cd, 
+		dc.doc_clsf_nm, 
+		dc.up_doc_clsf_no, 
+		dc.prvc_incl_yn, 
+		dc.use_en, 
+		dc.reg_ymd, 
+		dc.rgtr_id, 
+		dc.mdfcn_ymd, 
+		dc.mdfr_id,
+		dcnm.doc_lclsf_nm,
+		dcnm.doc_mclsf_nm,
+		dcnm.doc_sclsf_nm
 	</sql>
 	
 	<sql id="fromTables">
-		tb_dr_m_doc_clsf
+		tb_dr_m_doc_clsf AS dc
+		LEFT JOIN 
+		(WITH RECURSIVE cte(doc_clsf_no, doc_clsf_se_cd, up_doc_clsf_no, doc_clsf_nm_arr) AS (
+			SELECT t.doc_clsf_no, t.doc_clsf_se_cd, t.up_doc_clsf_no, CAST(ARRAY[t.doc_clsf_nm] AS text[]) AS doc_clsf_nm_arr FROM tb_dr_m_doc_clsf AS t 
+			UNION ALL
+			SELECT cte.doc_clsf_no, p.doc_clsf_se_cd, p.up_doc_clsf_no, cte.doc_clsf_nm_arr || p.doc_clsf_nm FROM tb_dr_m_doc_clsf AS p JOIN cte ON p.doc_clsf_no=cte.up_doc_clsf_no
+			) 
+		SELECT cte.doc_clsf_no, doc_clsf_nm_arr[1] AS doc_lclsf_nm, doc_clsf_nm_arr[2] AS doc_mclsf_nm, doc_clsf_nm_arr[3] AS doc_sclsf_nm FROM cte WHERE cte.doc_clsf_se_cd='L'
+		) AS dcnm ON dc.doc_clsf_no=dcnm.doc_clsf_no
 	</sql>
 
 
@@ -40,7 +51,7 @@
 		FROM
 			<include refid="fromTables"/>
 		WHERE
-			doc_clsf_no = #{no}
+			dc.doc_clsf_no = #{no}
  		
  	</select>
 
@@ -50,7 +61,7 @@
 		FROM
 			<include refid="fromTables"/>
 		WHERE
-			doc_clsf_se_cd = #{divCode}
+			dc.doc_clsf_se_cd = #{divCode}
  		
  	</select>
  	
@@ -61,8 +72,6 @@
 		FROM
 			<include refid="fromTables"/>
 		WHERE
-			up_doc_clsf_no = #{parentNo}
- 		
- 	</select>
- 	
+			dc.up_doc_clsf_no = #{parentNo}
+ 	</select> 	
 </mapper>
