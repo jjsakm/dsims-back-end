@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,6 +40,7 @@ import org.springframework.jdbc.support.lob.DefaultLobHandler;
 @PropertySources({
 	@PropertySource("classpath:/application.properties")
 })
+@MapperScan(basePackages = {"egovframework.com.edoc.clsf.domain.repository"})
 public class EgovConfigAppMapper {
 
     private final DataSource dataSource;
@@ -77,7 +79,7 @@ public class EgovConfigAppMapper {
 		try {
 			sqlSessionFactoryBean.setMapperLocations(
 				pathMatchingResourcePatternResolver
-					.getResources("classpath:/egovframework/mapper/let/**/*_" + dbType + ".xml"));
+					.getResources("classpath:/egovframework/mapper/edoc/**/*_" + dbType + ".xml"));
 		} catch (IOException e) {
 			// TODO Exception 처리 필요
 		}
