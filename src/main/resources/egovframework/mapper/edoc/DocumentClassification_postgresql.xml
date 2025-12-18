@@ -34,7 +34,7 @@
 	</sql>
 
 
-	<select id="select" resultMap="documentClassification">
+	<select id="select" resultType="egovframework.com.edoc.clsf.domain.model.DocumentClassificationVO">
 		SELECT
 			<include refid="fields"/>
 		FROM
@@ -44,7 +44,7 @@
  		
  	</select>
 
-	<select id="selectListByDivCode" resultMap="documentClassification">
+	<select id="selectListByDivCode" resultType="egovframework.com.edoc.clsf.domain.model.DocumentClassificationVO">
 		SELECT
 			<include refid="fields"/>
 		FROM
@@ -55,7 +55,7 @@
  	</select>
  	
 
- 	<select id="selectListByParentNo" resultMap="documentClassification">
+ 	<select id="selectListByParentNo" resultType="egovframework.com.edoc.clsf.domain.model.DocumentClassificationVO">
 		SELECT
 			<include refid="fields"/>
 		FROM

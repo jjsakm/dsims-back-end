@@ -20,34 +20,34 @@ public class DocumentClassificationVO implements Serializable {
 	private static final long serialVersionUID = -3067138537477155300L;
 
 	@Schema(description = "문서분류 번호", example="")
-	private String no;
+	private String docClsfNo;
 
 	@Schema(description = "문서분류 구분코드", example="")
-    private String divCode;
+    private String docClsfSeCd;
 
 	@Schema(description = "문서분류명", example="")
-    private String name = "";
+    private String docClsfNm = "";
 
 	@Schema(description = "상위문서분류 번호", example="")
-	private String parentNo;
+	private String upDocClsfNo;
 
 	@Schema(description = "개인정보포함여부", example="")
-    private String includingPrivacy ;
+    private String prvcInclYn ;
 
 	@Schema(description = "사용유무", example="")
-    private String use;
+    private String useEn;
 
 	@Schema(description = "등록일자")
-    private Date created;
+    private Date regYmd;
 
 	@Schema(description = "등록자", example="")
-    private String author;
+    private String rgtrId;
 
 	@Schema(description = "수정일자")
-    private Date updated;
+    private Date mdfcnYmd;
 
 	@Schema(description = "수정자", example="")
-    private String updateAuthor;
+    private String mdfrId;
     /**
      * toString 메소드를 대치한다.
      */
