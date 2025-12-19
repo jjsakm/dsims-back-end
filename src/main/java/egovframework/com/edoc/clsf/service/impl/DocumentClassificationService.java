@@ -6,9 +6,9 @@ import egovframework.com.edoc.clsf.domain.model.DocumentClassificationSearchVO;
 import egovframework.com.edoc.clsf.domain.model.DocumentClassificationVO;
 
 public interface DocumentClassificationService {
-	DocumentClassificationVO select(String no);
+	DocumentClassificationVO select(String docClsfNo);
 	List<DocumentClassificationVO> getTopLevelList();
-	List<DocumentClassificationVO> getChildren(String parentNo);
+	List<DocumentClassificationVO> getChildren(String docClsfNo);
 	List<DocumentClassificationVO> selectList(DocumentClassificationSearchVO searchVO);
 	int selectListTotCnt(DocumentClassificationSearchVO searchVO);
 }

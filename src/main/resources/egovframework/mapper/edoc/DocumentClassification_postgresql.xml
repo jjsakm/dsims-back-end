@@ -54,28 +54,28 @@
 		FROM
 			<include refid="fromTables"/>
 		WHERE
-			dc.doc_clsf_no = #{no}
+			dc.doc_clsf_no = #{docClsfNo}
  		
  	</select>
 
-	<select id="selectListByDivCode" resultType="egovframework.com.edoc.clsf.domain.model.DocumentClassificationVO">
+	<select id="selectListByDocClsfSeCd" resultType="egovframework.com.edoc.clsf.domain.model.DocumentClassificationVO">
 		SELECT
 			<include refid="fields"/>
 		FROM
 			<include refid="fromTables"/>
 		WHERE
-			dc.doc_clsf_se_cd = #{divCode}
+			dc.doc_clsf_se_cd = #{docClsfSeCd}
  		
  	</select>
  	
 
- 	<select id="selectListByParentNo" resultType="egovframework.com.edoc.clsf.domain.model.DocumentClassificationVO">
+ 	<select id="selectListByUpDocClsfNo" resultType="egovframework.com.edoc.clsf.domain.model.DocumentClassificationVO">
 		SELECT
 			<include refid="fields"/>
 		FROM
 			<include refid="fromTables"/>
 		WHERE
-			dc.up_doc_clsf_no = #{parentNo}
+			dc.up_doc_clsf_no = #{docClsfNo}
  	</select> 	 	
 
  	<select id="selectList" parameterType="egovframework.com.edoc.clsf.domain.model.DocumentClassificationSearchVO" resultType="egovframework.com.edoc.clsf.domain.model.DocumentClassificationVO">

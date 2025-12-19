@@ -12,9 +12,9 @@ public interface DocumentClassificationMapper {
 	
 	DocumentClassificationVO select(String no);
 	
-	List<DocumentClassificationVO> selectListByDivCode(String divCode);
+	List<DocumentClassificationVO> selectListByDocClsfSeCd(String docClsfSeCd);
 	
-	List<DocumentClassificationVO> selectListByParentNo(String parentNo);
+	List<DocumentClassificationVO> selectListByUpDocClsfNo(String parentNo);
 
 	List<DocumentClassificationVO> selectList(DocumentClassificationSearchVO searchVO);
 

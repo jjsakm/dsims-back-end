@@ -50,25 +50,25 @@ public class DocumentClassificationController {
 	}
 
 	@Operation(summary = "하위분류 조회", description = "하위분류 조회", tags = { "DocumentClassificationController" })
-	@Parameters({ @Parameter(name = "no", description = "문서분류코드 번호", required = true) })
-	@GetMapping("/{no}/children")
-	public ResultVO getChildren(@PathVariable("no") String no) {
+	@Parameters({ @Parameter(name = "docClsfNo", description = "문서분류코드 번호", required = true) })
+	@GetMapping("/{docClsfNo}/children")
+	public ResultVO getChildren(@PathVariable("docClsfNo") String docClsfNo) {
 
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
-		resultMap.put("list", documentClassificationService.getChildren(no));
+		resultMap.put("list", documentClassificationService.getChildren(docClsfNo));
 
 		return resultVoHelper.buildFromMap(resultMap, ResponseCode.SUCCESS);
 	}
 
 	@Operation(summary = "문서분류 상세 조회", description = "문서분류 상세 조회", tags = { "DocumentClassificationController" })
-	@Parameters({ @Parameter(name = "no", description = "문서분류코드 번호", required = true) })
-	@GetMapping("/{no}")
-	public ResultVO get(@PathVariable("no") String no) {
+	@Parameters({ @Parameter(name = "docClsfNo", description = "문서분류코드 번호", required = true) })
+	@GetMapping("/{docClsfNo}")
+	public ResultVO get(@PathVariable("docClsfNo") String docClsfNo) {
 
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
-		resultMap.put("detail", documentClassificationService.select(no));
+		resultMap.put("detail", documentClassificationService.select(docClsfNo));
 
 		return resultVoHelper.buildFromMap(resultMap, ResponseCode.SUCCESS);
 	}

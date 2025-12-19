@@ -19,18 +19,18 @@ public class DocumentClassificationServiceImpl extends EgovAbstractServiceImpl  
     private final DocumentClassificationMapper documentClassificationMapper;
 
     @Override
-    public DocumentClassificationVO select(String no) {
-    	return documentClassificationMapper.select(no);
+    public DocumentClassificationVO select(String docClsfNo) {
+    	return documentClassificationMapper.select(docClsfNo);
     }
 
 	@Override
 	public List<DocumentClassificationVO> getTopLevelList() {
-		return documentClassificationMapper.selectListByDivCode(DocumentClassificationDivCode.L.name());
+		return documentClassificationMapper.selectListByDocClsfSeCd(DocumentClassificationDivCode.L.name());
 	}
 
 	@Override
-	public List<DocumentClassificationVO> getChildren(String parentNo) {
-		return documentClassificationMapper.selectListByParentNo(parentNo);
+	public List<DocumentClassificationVO> getChildren(String docClsfNo) {
+		return documentClassificationMapper.selectListByUpDocClsfNo(docClsfNo);
 	}
 
 	@Override
