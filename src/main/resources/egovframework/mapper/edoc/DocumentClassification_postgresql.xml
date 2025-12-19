@@ -1,20 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="egovframework.com.edoc.clsf.domain.repository.DocumentClassificationMapper">
-
-	<resultMap id="documentClassification" type="egovframework.com.edoc.clsf.domain.model.DocumentClassificationVO">
-		<result property="no" column="doc_clsf_no"/>
-		<result property="divCode" column="doc_clsf_se_cd"/>
-		<result property="name" column="doc_clsf_nm"/>
-		<result property="parentNo" column="up_doc_clsf_no"/>
-		<result property="includingPrivacy" column="prvc_incl_yn"/>
-		<result property="use" column="use_en"/>
-		<result property="created" column="reg_ymd"/>
-		<result property="updated" column="mdfcn_ymd"/>
-		<result property="author" column="rgtr_id"/>
-		<result property="updateAuthor" column="mdfr_id"/>
-	</resultMap>
+<mapper namespace="egovframework.com.edoc.clsf.domain.repository.DocClsfMapper">
 	
 	<sql id="fields">
 		dc.doc_clsf_no, 
@@ -48,7 +35,7 @@
 	</sql>
 
 
-	<select id="select" resultType="egovframework.com.edoc.clsf.domain.model.DocumentClassificationVO">
+	<select id="select" resultType="egovframework.com.edoc.clsf.domain.model.DocClsfVO">
 		SELECT
 			<include refid="fields"/>
 		FROM
@@ -58,7 +45,7 @@
  		
  	</select>
 
-	<select id="selectListByDocClsfSeCd" resultType="egovframework.com.edoc.clsf.domain.model.DocumentClassificationVO">
+	<select id="selectListByDocClsfSeCd" resultType="egovframework.com.edoc.clsf.domain.model.DocClsfVO">
 		SELECT
 			<include refid="fields"/>
 		FROM
@@ -69,7 +56,7 @@
  	</select>
  	
 
- 	<select id="selectListByUpDocClsfNo" resultType="egovframework.com.edoc.clsf.domain.model.DocumentClassificationVO">
+ 	<select id="selectListByUpDocClsfNo" resultType="egovframework.com.edoc.clsf.domain.model.DocClsfVO">
 		SELECT
 			<include refid="fields"/>
 		FROM
@@ -78,7 +65,7 @@
 			dc.up_doc_clsf_no = #{docClsfNo}
  	</select> 	 	
 
- 	<select id="selectList" parameterType="egovframework.com.edoc.clsf.domain.model.DocumentClassificationSearchVO" resultType="egovframework.com.edoc.clsf.domain.model.DocumentClassificationVO">
+ 	<select id="selectList" parameterType="egovframework.com.edoc.clsf.domain.model.DocClsfSearchVO" resultType="egovframework.com.edoc.clsf.domain.model.DocClsfVO">
 		SELECT
 			<include refid="fields"/>
 		FROM
@@ -111,7 +98,7 @@
 			</if>
  	</select>
 
-	<select id="selectListTotCnt" parameterType="egovframework.com.edoc.clsf.domain.model.DocumentClassificationSearchVO" resultType="int">
+	<select id="selectListTotCnt" parameterType="egovframework.com.edoc.clsf.domain.model.DocClsfSearchVO" resultType="int">
 
 			SELECT 
 				COUNT(*) totcnt

@@ -1,5 +1,5 @@
 package egovframework.com.edoc.clsf.enums;
 
-public enum DocumentClassificationDivCode {
+public enum DocClsfSeCd {
 	L, M, S
 }

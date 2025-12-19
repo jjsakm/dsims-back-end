@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import egovframework.com.cmm.ResponseCode;
 import egovframework.com.cmm.service.ResultVO;
 import egovframework.com.cmm.util.ResultVoHelper;
-import egovframework.com.edoc.clsf.domain.model.DocumentClassificationSearchVO;
-import egovframework.com.edoc.clsf.service.impl.DocumentClassificationService;
+import egovframework.com.edoc.clsf.domain.model.DocClsfSearchVO;
+import egovframework.com.edoc.clsf.service.impl.DocClsfService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -30,45 +30,45 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping(value = "documentclassification")
 @RequiredArgsConstructor
-@Tag(name = "DocumentClassificationController", description = "회원 관리")
-public class DocumentClassificationController {
+@Tag(name = "DocClsfController", description = "문서분류")
+public class DocClsfController {
 
 	public static final String HEADER_STRING = "Authorization";
 
 	private final EgovPropertyService propertyService;
 	private final ResultVoHelper resultVoHelper;
-	private final DocumentClassificationService documentClassificationService;
+	private final DocClsfService docClsfService;
 
-	@Operation(summary = "대분류 조회", description = "대분류 조회", tags = { "DocumentClassificationController" })
+	@Operation(summary = "대분류 조회", description = "대분류 조회", tags = { "DocClsfController" })
 	@GetMapping("/toplevel")
 	public ResultVO getTopLevel() {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
-		resultMap.put("list", documentClassificationService.getTopLevelList());
+		resultMap.put("list", docClsfService.getTopLevelList());
 
 		return resultVoHelper.buildFromMap(resultMap, ResponseCode.SUCCESS);
 	}
 
-	@Operation(summary = "하위분류 조회", description = "하위분류 조회", tags = { "DocumentClassificationController" })
+	@Operation(summary = "하위분류 조회", description = "하위분류 조회", tags = { "DocClsfController" })
 	@Parameters({ @Parameter(name = "docClsfNo", description = "문서분류코드 번호", required = true) })
 	@GetMapping("/{docClsfNo}/children")
 	public ResultVO getChildren(@PathVariable("docClsfNo") String docClsfNo) {
 
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
-		resultMap.put("list", documentClassificationService.getChildren(docClsfNo));
+		resultMap.put("list", docClsfService.getChildren(docClsfNo));
 
 		return resultVoHelper.buildFromMap(resultMap, ResponseCode.SUCCESS);
 	}
 
-	@Operation(summary = "문서분류 상세 조회", description = "문서분류 상세 조회", tags = { "DocumentClassificationController" })
+	@Operation(summary = "문서분류 상세 조회", description = "문서분류 상세 조회", tags = { "DocClsfController" })
 	@Parameters({ @Parameter(name = "docClsfNo", description = "문서분류코드 번호", required = true) })
 	@GetMapping("/{docClsfNo}")
 	public ResultVO get(@PathVariable("docClsfNo") String docClsfNo) {
 
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
-		resultMap.put("detail", documentClassificationService.select(docClsfNo));
+		resultMap.put("detail", docClsfService.select(docClsfNo));
 
 		return resultVoHelper.buildFromMap(resultMap, ResponseCode.SUCCESS);
 	}
@@ -77,7 +77,7 @@ public class DocumentClassificationController {
 			summary = "문서분류 목록 조회",
 			description = "문서분류 목록을 조회",
 			security = {@SecurityRequirement(name = "Authorization")},
-			tags = {"DocumentClassificationController"}
+			tags = {"DocClsfController"}
 	)
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "조회 성공"),
@@ -86,7 +86,7 @@ public class DocumentClassificationController {
 	
 	@GetMapping(value ="/search")
 	public ResultVO selectBBSUseInfs(HttpServletRequest request,
-			@ModelAttribute DocumentClassificationSearchVO searchVO) throws Exception {
+			@ModelAttribute DocClsfSearchVO searchVO) throws Exception {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		searchVO.setPageUnit(propertyService.getInt("Globals.pageUnit"));
@@ -103,9 +103,9 @@ public class DocumentClassificationController {
 	    searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
 
-		paginationInfo.setTotalRecordCount(documentClassificationService.selectListTotCnt(searchVO));
+		paginationInfo.setTotalRecordCount(docClsfService.selectListTotCnt(searchVO));
 
-	    resultMap.put("list", documentClassificationService.selectList(searchVO));
+	    resultMap.put("list", docClsfService.selectList(searchVO));
 	    resultMap.put("paginationInfo", paginationInfo);
 
 	    return resultVoHelper.buildFromMap(resultMap, ResponseCode.SUCCESS);

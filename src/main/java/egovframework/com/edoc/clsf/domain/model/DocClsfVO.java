@@ -12,7 +12,7 @@ import lombok.Setter;
 @Schema(description = "문서분류")
 @Getter
 @Setter
-public class DocumentClassificationVO implements Serializable {
+public class DocClsfVO implements Serializable {
 
 	/**
 	 * 

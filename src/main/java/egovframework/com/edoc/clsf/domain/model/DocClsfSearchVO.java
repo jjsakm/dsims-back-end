@@ -11,7 +11,7 @@ import lombok.Setter;
 @Schema(description = "문서분류 검색 조건")
 @Getter
 @Setter
-public class DocumentClassificationSearchVO implements Serializable {
+public class DocClsfSearchVO implements Serializable {
 
 	/**
 	 * 
