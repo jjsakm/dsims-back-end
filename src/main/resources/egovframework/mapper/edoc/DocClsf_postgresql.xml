@@ -3,6 +3,11 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="egovframework.com.edoc.clsf.domain.repository.DocClsfMapper">
 	
+	<resultMap id="docClsf" type="egovframework.com.edoc.clsf.domain.model.DocClsfVO">
+		<result column="doc_clsf_no" property="docClsfNo"/>
+		<association property="prvcFileHldPrst" column="doc_clsf_no" select="egovframework.com.edoc.clsf.domain.repository.PrvcFileHldPrstMapper.select" />
+	</resultMap>
+	
 	<sql id="fields">
 		dc.doc_clsf_no, 
 		dc.doc_clsf_se_cd, 
@@ -33,9 +38,18 @@
 		SELECT cte.doc_clsf_no,  doc_clsf_no_arr[CARDINALITY(doc_clsf_no_arr)] AS doc_lclsf_no, doc_clsf_no_arr[CARDINALITY(doc_clsf_no_arr)-1] AS doc_mclsf_no, doc_clsf_no_arr[CARDINALITY(doc_clsf_no_arr)-2] AS doc_sclsf_no, doc_clsf_nm_arr[CARDINALITY(doc_clsf_no_arr)] AS doc_lclsf_nm, doc_clsf_nm_arr[CARDINALITY(doc_clsf_no_arr)-1] AS doc_mclsf_nm, doc_clsf_nm_arr[CARDINALITY(doc_clsf_no_arr)-2] AS doc_sclsf_nm FROM cte WHERE cte.doc_clsf_se_cd='L'
 		) AS dcnm ON dc.doc_clsf_no=dcnm.doc_clsf_no
 	</sql>
+	
+	
+    
+    <insert id="insert" >
+        INSERT INTO tb_dr_m_doc_clsf
+			(doc_clsf_no, doc_clsf_se_cd, doc_clsf_nm, up_doc_clsf_no, prvc_incl_yn, use_en, reg_ymd, rgtr_id, mdfcn_ymd, mdfr_id)
+		VALUES
+			(#{docClsfNo}, #{docClsfSeCd}, #{docClsfNm}, #{upDocClsfNo}, #{prvcInclYn}, #{useEn}, NOW(), #{rgtrId}, NOW(), #{mdfrId})
+    </insert>
 
 
-	<select id="select" resultType="egovframework.com.edoc.clsf.domain.model.DocClsfVO">
+	<select id="select" resultMap="docClsf">
 		SELECT
 			<include refid="fields"/>
 		FROM
@@ -45,7 +59,7 @@
  		
  	</select>
 
-	<select id="selectListByDocClsfSeCd" resultType="egovframework.com.edoc.clsf.domain.model.DocClsfVO">
+	<select id="selectListByDocClsfSeCd" resultMap="docClsf">
 		SELECT
 			<include refid="fields"/>
 		FROM
@@ -56,7 +70,7 @@
  	</select>
  	
 
- 	<select id="selectListByUpDocClsfNo" resultType="egovframework.com.edoc.clsf.domain.model.DocClsfVO">
+ 	<select id="selectListByUpDocClsfNo" resultMap="docClsf">
 		SELECT
 			<include refid="fields"/>
 		FROM
@@ -65,7 +79,7 @@
 			dc.up_doc_clsf_no = #{docClsfNo}
  	</select> 	 	
 
- 	<select id="selectList" parameterType="egovframework.com.edoc.clsf.domain.model.DocClsfSearchVO" resultType="egovframework.com.edoc.clsf.domain.model.DocClsfVO">
+ 	<select id="selectList" parameterType="egovframework.com.edoc.clsf.dto.request.DocClsfSearchRequestDto" resultMap="docClsf">
 		SELECT
 			<include refid="fields"/>
 		FROM
@@ -98,7 +112,7 @@
 			</if>
  	</select>
 
-	<select id="selectListTotCnt" parameterType="egovframework.com.edoc.clsf.domain.model.DocClsfSearchVO" resultType="int">
+	<select id="selectListTotCnt" parameterType="egovframework.com.edoc.clsf.dto.request.DocClsfSearchRequestDto" resultType="int">
 
 			SELECT 
 				COUNT(*) totcnt

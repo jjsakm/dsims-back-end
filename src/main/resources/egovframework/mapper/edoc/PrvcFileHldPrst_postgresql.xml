@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.com.edoc.clsf.domain.repository.PrvcFileHldPrstMapper">
+	
+	<sql id="fields">
+		pfhp.doc_clsf_no,
+		pfhp.prvc_file_hld_prst_no,
+		pfhp.dept_nm, file_nm,
+		pfhp.hld_prps,
+		pfhp.clct_stt_bss_expln,
+		pfhp.use_dept_nm,
+		pfhp.prvc_prcs_mthd_expln,
+		pfhp.hld_prd_dfyrs,
+		pfhp.hld_prd_mm_cnt,
+		pfhp.info_mnbd_prvc_mttr,
+		pfhp.stty_agt_prvc_mttr,
+		pfhp.rrno_clct_yn,
+		pfhp.rrno_clct_stt_bss_expln,
+		pfhp.info_mnbd_agre_yn,
+		pfhp.info_mnbd_dsag_clct_stt_bss_expln,
+		pfhp.sens_info_hld_yn,
+		pfhp.sens_info_indiv_agre_yn,
+		pfhp.sens_info_hld_stt_bss_expln,
+		pfhp.uii_hld_yn, uii_indiv_agre_yn,
+		pfhp.uii_hld_stt_bss_expln, prvc_evl_trgt_yn,
+		pfhp.hndl_pic_nm,
+		pfhp.tdpty_splrcp_nm,
+		pfhp.tdpty_pvsn_bss_expln,
+		pfhp.tdpty_pvsn_mttr,
+		pfhp.prvc_prcs_cnsgn_bzenty_nm,
+		pfhp.prvc_cnsgn_ctrt_yn,
+		pfhp.prvc_cnsgn_fact_indct_yn,
+		pfhp.prps_excl_utztn_pvsn_yn,
+		pfhp.prps_excl_utztn_pvsn_bss_expln,
+		pfhp.reg_ymd,
+		pfhp.rgtr_id,
+		pfhp.mdfcn_ymd,
+		pfhp.mdfr_id
+	</sql>
+	
+	<sql id="fromTables">
+		tb_dr_m_prvc_file_hld_prst AS pfhp
+	</sql>
+
+    <insert id="insert" >
+    INSERT INTO tb_dr_m_prvc_file_hld_prst
+	(
+		doc_clsf_no, prvc_file_hld_prst_no, dept_nm, file_nm, hld_prps, clct_stt_bss_expln, use_dept_nm,
+		prvc_prcs_mthd_expln, hld_prd_dfyrs, hld_prd_mm_cnt, info_mnbd_prvc_mttr, stty_agt_prvc_mttr, 
+		rrno_clct_yn, rrno_clct_stt_bss_expln, info_mnbd_agre_yn, info_mnbd_dsag_clct_stt_bss_expln,
+	  	sens_info_hld_yn, sens_info_indiv_agre_yn, sens_info_hld_stt_bss_expln, uii_hld_yn, uii_indiv_agre_yn, 
+	 	uii_hld_stt_bss_expln, prvc_evl_trgt_yn, hndl_pic_nm, tdpty_splrcp_nm, tdpty_pvsn_bss_expln, 
+	  	tdpty_pvsn_mttr, prvc_prcs_cnsgn_bzenty_nm, prvc_cnsgn_ctrt_yn, prvc_cnsgn_fact_indct_yn, 
+	  	prps_excl_utztn_pvsn_yn, prps_excl_utztn_pvsn_bss_expln, reg_ymd, rgtr_id, mdfcn_ymd, mdfr_id
+	 )
+	VALUES
+	(
+		#{docClsfNo}, #{prvcFileHldPrstNo}, #{deptNm}, #{fileNm}, #{hldPrps}, #{clctSttBssExpln}, #{useDeptNm},
+	 	#{prvcPrcsMthdExpln}, #{hldPrdDfyrs}::NUMERIC, #{hldPrdMmCnt}::NUMERIC, #{infoMnbdPrvcMttr}, #{sttyAgtPrvcMttr},
+		#{rrnoClctYn}, #{rrnoClctSttBssExpln}, #{infoMnbdAgreYn}, #{infoMnbdDsagClctSttBssExpln},
+	  	#{sensInfoHldYn}, #{sensInfoIndivAgreYn}, #{sensInfoHldSttBssExpln}, #{uiiHldYn}, #{uiiIndivAgreYn},
+	 	#{uiiHldSttBssExpln}, #{prvcEvlTrgtYn}, #{hndlPicNm}, #{tdptySplrcpNm}, #{tdptyPvsnBssExpln},
+	  	#{tdptyPvsnMttr}, #{prvcPrcsCnsgnBzentyNm}, #{prvcCnsgnCtrtYn}, #{prvcCnsgnFactIndctYn},
+	  	#{prpsExclUtztnPvsnYn}, #{prpsExclUtztnPvsnBssExpln}, NOW(), #{rgtrId}, NOW(), #{mdfrId}
+	)
+    </insert>
+
+	<select id="select" resultType="egovframework.com.edoc.clsf.domain.model.PrvcFileHldPrstVO">
+		SELECT
+			<include refid="fields"/>
+		FROM
+			<include refid="fromTables"/>
+		WHERE
+			pfhp.doc_clsf_no = #{docClsfNo}
+ 		
+ 	</select>
+
+</mapper>

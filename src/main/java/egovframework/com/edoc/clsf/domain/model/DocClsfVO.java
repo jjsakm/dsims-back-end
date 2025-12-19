@@ -66,6 +66,9 @@ public class DocClsfVO implements Serializable {
 
 	@Schema(description = "수정자", example="")
     private String mdfrId;
+	
+	@Schema(description = "개인정보파일보유현황", example="")
+	private PrvcFileHldPrstVO prvcFileHldPrst;
     /**
      * toString 메소드를 대치한다.
      */

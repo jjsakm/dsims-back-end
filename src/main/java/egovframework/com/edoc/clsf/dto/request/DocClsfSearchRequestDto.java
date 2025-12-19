@@ -1,4 +1,4 @@
-package egovframework.com.edoc.clsf.domain.model;
+package egovframework.com.edoc.clsf.dto.request;
 
 import java.io.Serializable;
 
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Schema(description = "문서분류 검색 조건")
 @Getter
 @Setter
-public class DocClsfSearchVO implements Serializable {
+public class DocClsfSearchRequestDto implements Serializable {
 
 	/**
 	 * 
