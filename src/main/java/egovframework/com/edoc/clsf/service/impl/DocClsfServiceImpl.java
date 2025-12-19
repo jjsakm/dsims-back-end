@@ -53,6 +53,10 @@ public class DocClsfServiceImpl extends EgovAbstractServiceImpl implements DocCl
 	public int insert(DocClsfInsertRequestDto insertRequestDto) {
 		String docClsfNo = UUID.randomUUID().toString().substring(0, 20);
 		insertRequestDto.setDocClsfNo(docClsfNo);
+		if (!DocClsfSeCd.S.name().equals(insertRequestDto.getDocClsfSeCd())) {
+			insertRequestDto.setUseEn("Y");
+			insertRequestDto.setPrvcInclYn("N");
+		}
 		int docClsfInsertRet = docClsfMapper.insert(insertRequestDto);
 		if (docClsfInsertRet != 0 && isPrvcIncl(insertRequestDto)) {
 			insertRequestDto.getPrvcFieldHldPrst().setDocClsfNo(docClsfNo);
