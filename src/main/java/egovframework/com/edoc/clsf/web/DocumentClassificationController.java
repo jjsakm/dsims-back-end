@@ -41,7 +41,7 @@ public class DocumentClassificationController {
 
 	@Operation(summary = "대분류 조회", description = "대분류 조회", tags = { "DocumentClassificationController" })
 	@GetMapping("/toplevel")
-	public ResultVO getAllOfOption() {
+	public ResultVO getTopLevel() {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
 		resultMap.put("list", documentClassificationService.getTopLevelList());
@@ -52,11 +52,23 @@ public class DocumentClassificationController {
 	@Operation(summary = "하위분류 조회", description = "하위분류 조회", tags = { "DocumentClassificationController" })
 	@Parameters({ @Parameter(name = "no", description = "문서분류코드 번호", required = true) })
 	@GetMapping("/{no}/children")
-	public ResultVO getAllOfOption(@PathVariable("no") String no) {
+	public ResultVO getChildren(@PathVariable("no") String no) {
 
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
 		resultMap.put("list", documentClassificationService.getChildren(no));
+
+		return resultVoHelper.buildFromMap(resultMap, ResponseCode.SUCCESS);
+	}
+
+	@Operation(summary = "문서분류 상세 조회", description = "문서분류 상세 조회", tags = { "DocumentClassificationController" })
+	@Parameters({ @Parameter(name = "no", description = "문서분류코드 번호", required = true) })
+	@GetMapping("/{no}")
+	public ResultVO get(@PathVariable("no") String no) {
+
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+
+		resultMap.put("detail", documentClassificationService.select(no));
 
 		return resultVoHelper.buildFromMap(resultMap, ResponseCode.SUCCESS);
 	}
