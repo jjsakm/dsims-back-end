@@ -116,8 +116,8 @@ public class DocClsfController {
 			@ApiResponse(responseCode = "403", description = "인가된 사용자가 아님"),
 			@ApiResponse(responseCode = "900", description = "입력값 무결성 오류") })
 	@PostMapping("/add")
-	public ResultVO insertClsf(@RequestBody DocClsfInsertRequestDto docClsfInsertRequestDto, BindingResult bindingResult)
-			throws Exception {
+	public ResultVO insertClsf(@RequestBody DocClsfInsertRequestDto docClsfInsertRequestDto,
+			BindingResult bindingResult) throws Exception {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
 		if (bindingResult.hasErrors()) {
@@ -128,22 +128,19 @@ public class DocClsfController {
 
 		docClsfInsertRequestDto.setRgtrId("tester");
 		docClsfInsertRequestDto.setMdfrId("tester");
-		PrvcFileHldPrstUpsertRequestDto prvcFieldHldPrst = docClsfInsertRequestDto.getPrvcFileHldPrstUpsertRequestDto();
-		if(prvcFieldHldPrst!=null) {
+		PrvcFileHldPrstUpsertRequestDto prvcFieldHldPrst = docClsfInsertRequestDto.getPrvcFileHldPrst();
+		if (prvcFieldHldPrst != null) {
 			prvcFieldHldPrst.setRgtrId("tester");
 			prvcFieldHldPrst.setMdfrId("tester");
 		}
-		
+
 		docClsfService.insert(docClsfInsertRequestDto);
-		
 
 		resultMap.put("docClsfNo", docClsfInsertRequestDto.getDocClsfNo());
 		resultMap.put("resultMsg", "success.common.insert");
 
 		return resultVoHelper.buildFromMap(resultMap, ResponseCode.SUCCESS);
 	}
-	
-
 
 	@Operation(summary = "문서분류 수정", description = "문서 수정 처리", security = {
 			@SecurityRequirement(name = "Authorization") }, tags = { "DocClsfController" })
@@ -151,8 +148,8 @@ public class DocClsfController {
 			@ApiResponse(responseCode = "403", description = "인가된 사용자가 아님"),
 			@ApiResponse(responseCode = "900", description = "입력값 무결성 오류") })
 	@PostMapping("/update")
-	public ResultVO updateClsf(@RequestBody DocClsfUpdateRequestDto docClsfUpdateRequestDto, BindingResult bindingResult)
-			throws Exception {
+	public ResultVO updateClsf(@RequestBody DocClsfUpdateRequestDto docClsfUpdateRequestDto,
+			BindingResult bindingResult) throws Exception {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
 		if (bindingResult.hasErrors()) {
@@ -162,13 +159,12 @@ public class DocClsfController {
 		}
 
 		docClsfUpdateRequestDto.setMdfrId("tester");
-		PrvcFileHldPrstUpsertRequestDto prvcFieldHldPrst = docClsfUpdateRequestDto.getPrvcFileHldPrstUpsertRquestDto();
-		if(prvcFieldHldPrst!=null) {
+		PrvcFileHldPrstUpsertRequestDto prvcFieldHldPrst = docClsfUpdateRequestDto.getPrvcFileHldPrst();
+		if (prvcFieldHldPrst != null) {
 			prvcFieldHldPrst.setMdfrId("tester");
 		}
-		
+
 		docClsfService.update(docClsfUpdateRequestDto);
-		
 
 		resultMap.put("docClsfNo", docClsfUpdateRequestDto.getDocClsfNo());
 		resultMap.put("resultMsg", "success.common.insert");

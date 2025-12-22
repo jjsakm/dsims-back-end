@@ -62,10 +62,10 @@ public class DocClsfServiceImpl extends EgovAbstractServiceImpl implements DocCl
 		}
 		int docClsfInsertRet = docClsfMapper.insert(insertRequestDto);
 		if (docClsfInsertRet != 0 && isPrvcIncl(insertRequestDto.getDocClsfSeCd(), insertRequestDto.getPrvcInclYn())) {
-			insertRequestDto.getPrvcFileHldPrstUpsertRequestDto().setDocClsfNo(docClsfNo);
-			insertRequestDto.getPrvcFileHldPrstUpsertRequestDto()
+			insertRequestDto.getPrvcFileHldPrst().setDocClsfNo(docClsfNo);
+			insertRequestDto.getPrvcFileHldPrst()
 					.setPrvcFileHldPrstNo(UUID.randomUUID().toString().substring(0, 20));
-			prvcFileHldPrstMapper.insert(insertRequestDto.getPrvcFileHldPrstUpsertRequestDto());
+			prvcFileHldPrstMapper.insert(insertRequestDto.getPrvcFileHldPrst());
 		}
 //		createDocClsfHist(docClsfNo);
 		return docClsfInsertRet;
@@ -78,10 +78,10 @@ public class DocClsfServiceImpl extends EgovAbstractServiceImpl implements DocCl
 		if (ret != 0) {
 			if (isPrvcIncl(old.getDocClsfSeCd(), updateRequestDto.getPrvcInclYn())) {
 				if (old.getPrvcFileHldPrst() != null) {
-					updateRequestDto.getPrvcFileHldPrstUpsertRquestDto().setDocClsfNo(updateRequestDto.getDocClsfNo());
-					prvcFileHldPrstMapper.update(updateRequestDto.getPrvcFileHldPrstUpsertRquestDto());
+					updateRequestDto.getPrvcFileHldPrst().setDocClsfNo(updateRequestDto.getDocClsfNo());
+					prvcFileHldPrstMapper.update(updateRequestDto.getPrvcFileHldPrst());
 				} else {
-					prvcFileHldPrstMapper.insert(updateRequestDto.getPrvcFileHldPrstUpsertRquestDto());
+					prvcFileHldPrstMapper.insert(updateRequestDto.getPrvcFileHldPrst());
 				}
 			}
 		} else {
