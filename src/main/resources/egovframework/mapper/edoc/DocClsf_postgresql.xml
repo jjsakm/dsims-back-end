@@ -52,6 +52,7 @@
 		UPDATE tb_dr_m_doc_clsf
 		SET
 			doc_clsf_nm = #{docClsfNm},
+			up_doc_clsf_no = #{upDocClsfNo},
 			prvc_incl_yn = #{prvcInclYn},
 			use_en = #{useEn},
 			mdfr_id = #{mdfrId},
