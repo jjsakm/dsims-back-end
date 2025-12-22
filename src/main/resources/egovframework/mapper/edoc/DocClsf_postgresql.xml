@@ -60,6 +60,14 @@
 		WHERE
 			doc_clsf_no = #{docClsfNo}
 	</update>
+	
+	<delete id="delete">
+		DELETE FROM
+			tb_dr_m_doc_clsf
+		WHERE
+			doc_clsf_no = #{docClsfNo}
+
+	</delete>
 		
 
 
@@ -124,6 +132,7 @@
 			<if test="useEn != null and useEn != ''">
 				AND dc.use_en = #{useEn}
 			</if>
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
  	</select>
 
 	<select id="selectListTotCnt" parameterType="egovframework.com.edoc.clsf.dto.request.DocClsfSearchRequestDto" resultType="int">
