@@ -2,6 +2,8 @@ package egovframework.com.edoc.clsf.dto.request;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotNull;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,6 +24,7 @@ public class DocClsfInsertRequestDto implements Serializable {
 	private String docClsfNo;
 
 	@Schema(description = "문서분류 구분코드", example = "")
+	@NotNull
 	private String docClsfSeCd;
 
 	@Schema(description = "문서분류명", example = "")
@@ -43,7 +46,7 @@ public class DocClsfInsertRequestDto implements Serializable {
 	private String mdfrId;
 
 	@Schema(description = "개인정보파일보유현황", example = "")
-	private PrvcFileHldPrstUpsertRequestDto prvcFileHldPrstUpsertRequestDto;
+	private PrvcFileHldPrstUpsertRequestDto prvcFileHldPrst;
 
 	/**
 	 * toString 메소드를 대치한다.

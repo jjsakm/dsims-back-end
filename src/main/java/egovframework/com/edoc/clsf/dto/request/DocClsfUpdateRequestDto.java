@@ -35,7 +35,7 @@ public class DocClsfUpdateRequestDto implements Serializable {
 	private String mdfrId;
 
 	@Schema(description = "개인정보파일보유현황", example = "")
-	private PrvcFileHldPrstUpsertRequestDto prvcFileHldPrstUpsertRquestDto;
+	private PrvcFileHldPrstUpsertRequestDto prvcFileHldPrst;
 
 	/**
 	 * toString 메소드를 대치한다.
