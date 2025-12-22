@@ -8,21 +8,19 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
-@Schema(description = "문서분류 등록")
+@Schema(description = "문서분류 수정")
 @Getter
 @Setter
-public class DocClsfInsertRequestDto implements Serializable {
+public class DocClsfUpdateRequestDto implements Serializable {
+
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -6478162443783502376L;
+	private static final long serialVersionUID = 6800848624760409230L;
 
-	@Schema(description = "문서분류 번호", example = "", hidden = true)
+	@Schema(description = "문서분류 번호", example = "")
 	private String docClsfNo;
-
-	@Schema(description = "문서분류 구분코드", example = "")
-	private String docClsfSeCd;
 
 	@Schema(description = "문서분류명", example = "")
 	private String docClsfNm = "";
@@ -36,14 +34,11 @@ public class DocClsfInsertRequestDto implements Serializable {
 	@Schema(description = "사용유무", example = "")
 	private String useEn;
 
-	@Schema(description = "등록자", example = "", hidden = true)
-	private String rgtrId;
-
 	@Schema(description = "수정자", example = "", hidden = true)
 	private String mdfrId;
 
 	@Schema(description = "개인정보파일보유현황", example = "")
-	private PrvcFileHldPrstUpsertRequestDto prvcFileHldPrstUpsertRequestDto;
+	private PrvcFileHldPrstUpsertRequestDto prvcFileHldPrstUpsertRquestDto;
 
 	/**
 	 * toString 메소드를 대치한다.

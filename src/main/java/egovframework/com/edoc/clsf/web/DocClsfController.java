@@ -21,7 +21,8 @@ import egovframework.com.cmm.service.ResultVO;
 import egovframework.com.cmm.util.ResultVoHelper;
 import egovframework.com.edoc.clsf.dto.request.DocClsfInsertRequestDto;
 import egovframework.com.edoc.clsf.dto.request.DocClsfSearchRequestDto;
-import egovframework.com.edoc.clsf.dto.request.PrvcFileHldPrstInsertRequestDto;
+import egovframework.com.edoc.clsf.dto.request.DocClsfUpdateRequestDto;
+import egovframework.com.edoc.clsf.dto.request.PrvcFileHldPrstUpsertRequestDto;
 import egovframework.com.edoc.clsf.service.impl.DocClsfService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -114,7 +115,6 @@ public class DocClsfController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "등록 성공"),
 			@ApiResponse(responseCode = "403", description = "인가된 사용자가 아님"),
 			@ApiResponse(responseCode = "900", description = "입력값 무결성 오류") })
-
 	@PostMapping("/add")
 	public ResultVO insertClsf(@RequestBody DocClsfInsertRequestDto docClsfInsertRequestDto, BindingResult bindingResult)
 			throws Exception {
@@ -128,7 +128,7 @@ public class DocClsfController {
 
 		docClsfInsertRequestDto.setRgtrId("tester");
 		docClsfInsertRequestDto.setMdfrId("tester");
-		PrvcFileHldPrstInsertRequestDto prvcFieldHldPrst = docClsfInsertRequestDto.getPrvcFieldHldPrst();
+		PrvcFileHldPrstUpsertRequestDto prvcFieldHldPrst = docClsfInsertRequestDto.getPrvcFileHldPrstUpsertRequestDto();
 		if(prvcFieldHldPrst!=null) {
 			prvcFieldHldPrst.setRgtrId("tester");
 			prvcFieldHldPrst.setMdfrId("tester");
@@ -138,6 +138,39 @@ public class DocClsfController {
 		
 
 		resultMap.put("docClsfNo", docClsfInsertRequestDto.getDocClsfNo());
+		resultMap.put("resultMsg", "success.common.insert");
+
+		return resultVoHelper.buildFromMap(resultMap, ResponseCode.SUCCESS);
+	}
+	
+
+
+	@Operation(summary = "문서분류 수정", description = "문서 수정 처리", security = {
+			@SecurityRequirement(name = "Authorization") }, tags = { "DocClsfController" })
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "수정 성공"),
+			@ApiResponse(responseCode = "403", description = "인가된 사용자가 아님"),
+			@ApiResponse(responseCode = "900", description = "입력값 무결성 오류") })
+	@PostMapping("/update")
+	public ResultVO updateClsf(@RequestBody DocClsfUpdateRequestDto docClsfUpdateRequestDto, BindingResult bindingResult)
+			throws Exception {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+
+		if (bindingResult.hasErrors()) {
+
+			resultMap.put("resultMsg", "수정 실패");
+			return resultVoHelper.buildFromMap(resultMap, ResponseCode.SAVE_ERROR);
+		}
+
+		docClsfUpdateRequestDto.setMdfrId("tester");
+		PrvcFileHldPrstUpsertRequestDto prvcFieldHldPrst = docClsfUpdateRequestDto.getPrvcFileHldPrstUpsertRquestDto();
+		if(prvcFieldHldPrst!=null) {
+			prvcFieldHldPrst.setMdfrId("tester");
+		}
+		
+		docClsfService.update(docClsfUpdateRequestDto);
+		
+
+		resultMap.put("docClsfNo", docClsfUpdateRequestDto.getDocClsfNo());
 		resultMap.put("resultMsg", "success.common.insert");
 
 		return resultVoHelper.buildFromMap(resultMap, ResponseCode.SUCCESS);

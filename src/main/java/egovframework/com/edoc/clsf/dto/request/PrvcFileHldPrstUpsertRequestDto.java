@@ -11,7 +11,7 @@ import lombok.Setter;
 @Schema(description = "문서분류")
 @Getter
 @Setter
-public class PrvcFileHldPrstInsertRequestDto implements Serializable {
+public class PrvcFileHldPrstUpsertRequestDto implements Serializable {
 
 	/**
 	 * 

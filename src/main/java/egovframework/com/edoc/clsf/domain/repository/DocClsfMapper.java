@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import egovframework.com.edoc.clsf.domain.model.DocClsfVO;
 import egovframework.com.edoc.clsf.dto.request.DocClsfInsertRequestDto;
 import egovframework.com.edoc.clsf.dto.request.DocClsfSearchRequestDto;
+import egovframework.com.edoc.clsf.dto.request.DocClsfUpdateRequestDto;
 
 @Mapper
 public interface DocClsfMapper {
@@ -21,5 +22,7 @@ public interface DocClsfMapper {
 
 	int selectListTotCnt(DocClsfSearchRequestDto searchRequestDto);
 
-	int insert(DocClsfInsertRequestDto docClsfVO);
+	int insert(DocClsfInsertRequestDto insertRequestDto);
+
+	int update(DocClsfUpdateRequestDto updateRequestDto);
 }

@@ -48,6 +48,20 @@
 			(#{docClsfNo}, #{docClsfSeCd}, #{docClsfNm}, #{upDocClsfNo}, #{prvcInclYn}, #{useEn}, NOW(), #{rgtrId}, NOW(), #{mdfrId})
     </insert>
 
+	<update id="update">
+		UPDATE tb_dr_m_doc_clsf
+		SET
+			doc_clsf_nm = #{docClsfNm},
+			up_doc_clsf_no = #{upDocClsfNo},
+			prvc_incl_yn = #{prvcInclYn},
+			use_en = #{useEn},
+			mdfr_id = #{mdfrId},
+			mdfcn_ymd = NOW()
+		WHERE
+			doc_clsf_no = #{docClsfNo}
+	</update>
+		
+
 
 	<select id="select" resultMap="docClsf">
 		SELECT

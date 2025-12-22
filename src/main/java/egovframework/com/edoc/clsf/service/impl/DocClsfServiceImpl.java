@@ -12,6 +12,7 @@ import egovframework.com.edoc.clsf.domain.repository.DocClsfMapper;
 import egovframework.com.edoc.clsf.domain.repository.PrvcFileHldPrstMapper;
 import egovframework.com.edoc.clsf.dto.request.DocClsfInsertRequestDto;
 import egovframework.com.edoc.clsf.dto.request.DocClsfSearchRequestDto;
+import egovframework.com.edoc.clsf.dto.request.DocClsfUpdateRequestDto;
 import egovframework.com.edoc.clsf.enums.DocClsfSeCd;
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +24,8 @@ public class DocClsfServiceImpl extends EgovAbstractServiceImpl implements DocCl
 	private final DocClsfMapper docClsfMapper;
 
 	private final PrvcFileHldPrstMapper prvcFileHldPrstMapper;
+
+	/* private final DocClsfHistMapper docClsfHistMapper; */
 
 	@Override
 	public DocClsfVO select(String docClsfNo) {
@@ -58,16 +61,48 @@ public class DocClsfServiceImpl extends EgovAbstractServiceImpl implements DocCl
 			insertRequestDto.setPrvcInclYn("N");
 		}
 		int docClsfInsertRet = docClsfMapper.insert(insertRequestDto);
-		if (docClsfInsertRet != 0 && isPrvcIncl(insertRequestDto)) {
-			insertRequestDto.getPrvcFieldHldPrst().setDocClsfNo(docClsfNo);
-			insertRequestDto.getPrvcFieldHldPrst().setPrvcFileHldPrstNo(UUID.randomUUID().toString().substring(0, 20));
-			prvcFileHldPrstMapper.insert(insertRequestDto.getPrvcFieldHldPrst());
+		if (docClsfInsertRet != 0 && isPrvcIncl(insertRequestDto.getDocClsfSeCd(), insertRequestDto.getPrvcInclYn())) {
+			insertRequestDto.getPrvcFileHldPrstUpsertRequestDto().setDocClsfNo(docClsfNo);
+			insertRequestDto.getPrvcFileHldPrstUpsertRequestDto()
+					.setPrvcFileHldPrstNo(UUID.randomUUID().toString().substring(0, 20));
+			prvcFileHldPrstMapper.insert(insertRequestDto.getPrvcFileHldPrstUpsertRequestDto());
 		}
+//		createDocClsfHist(docClsfNo);
 		return docClsfInsertRet;
 	}
 
-	private boolean isPrvcIncl(DocClsfInsertRequestDto insertRequestDto) {
-		return "Y".equals(insertRequestDto.getPrvcInclYn())
-				&& DocClsfSeCd.S.name().equals(insertRequestDto.getDocClsfSeCd());
+	@Override
+	public int update(DocClsfUpdateRequestDto updateRequestDto) {
+		DocClsfVO old = docClsfMapper.select(updateRequestDto.getDocClsfNo());
+		int ret = docClsfMapper.update(updateRequestDto);
+		if (ret != 0) {
+			if (isPrvcIncl(old.getDocClsfSeCd(), updateRequestDto.getPrvcInclYn())) {
+				if (old.getPrvcFileHldPrst() != null) {
+					updateRequestDto.getPrvcFileHldPrstUpsertRquestDto().setDocClsfNo(updateRequestDto.getDocClsfNo());
+					prvcFileHldPrstMapper.update(updateRequestDto.getPrvcFileHldPrstUpsertRquestDto());
+				} else {
+					prvcFileHldPrstMapper.insert(updateRequestDto.getPrvcFileHldPrstUpsertRquestDto());
+				}
+			}
+		} else {
+			prvcFileHldPrstMapper.delete(old.getDocClsfNo(), old.getPrvcFileHldPrst().getPrvcFileHldPrstNo());
+		}
+		return ret;
+	}
+
+	/*
+	 * private void createDocClsfHist(String docClsfNo) { DocClsfVO docClsf =
+	 * docClsfMapper.select(docClsfNo); DocClsfHistVO docClsfHist = new
+	 * DocClsfHistVO(); docClsfHist.setDocClsf(docClsf);
+	 * docClsfHist.setMdfrDetail("문서분류 수정");
+	 * docClsfHist.setMdfrIp("111.111.111.111"); docClsfHist.setMdfrEqmt("PC");
+	 * docClsfHistMapper.insert(docClsfHist); }
+	 */
+
+	private boolean isPrvcIncl(String docClsfSeCd, String prvcInclYn) {
+		System.out.println(prvcInclYn + "!!!!");
+		System.out.println("Y".equals(prvcInclYn) && DocClsfSeCd.S.name().equals(docClsfSeCd));
+		return "Y".equals(prvcInclYn) && DocClsfSeCd.S.name().equals(docClsfSeCd);
+
 	}
 }

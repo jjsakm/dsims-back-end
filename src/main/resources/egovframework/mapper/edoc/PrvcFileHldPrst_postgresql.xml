@@ -23,7 +23,8 @@
 		pfhp.sens_info_indiv_agre_yn,
 		pfhp.sens_info_hld_stt_bss_expln,
 		pfhp.uii_hld_yn, uii_indiv_agre_yn,
-		pfhp.uii_hld_stt_bss_expln, prvc_evl_trgt_yn,
+		pfhp.uii_hld_stt_bss_expln,
+		pfhp.prvc_evl_trgt_yn,
 		pfhp.hndl_pic_nm,
 		pfhp.tdpty_splrcp_nm,
 		pfhp.tdpty_pvsn_bss_expln,
@@ -65,6 +66,54 @@
 	  	#{prpsExclUtztnPvsnYn}, #{prpsExclUtztnPvsnBssExpln}, NOW(), #{rgtrId}, NOW(), #{mdfrId}
 	)
     </insert>
+    
+
+	<update id="update">
+		UPDATE tb_dr_m_prvc_file_hld_prst
+		SET
+			dept_nm = #{deptNm},
+			file_nm = #{fileNm},
+			hld_prps = #{hldPrps},
+			clct_stt_bss_expln = #{clctSttBssExpln},
+			use_dept_nm = #{useDeptNm},
+			prvc_prcs_mthd_expln = #{prvcPrcsMthdExpln},
+			hld_prd_dfyrs = #{hldPrdDfyrs}::NUMERIC,
+			hld_prd_mm_cnt = #{hldPrdMmCnt}::NUMERIC,
+			info_mnbd_prvc_mttr = #{infoMnbdPrvcMttr},
+			stty_agt_prvc_mttr = #{sttyAgtPrvcMttr},
+			rrno_clct_yn = #{rrnoClctYn},
+			rrno_clct_stt_bss_expln = #{rrnoClctSttBssExpln},
+			info_mnbd_agre_yn = #{infoMnbdAgreYn},
+			info_mnbd_dsag_clct_stt_bss_expln = #{infoMnbdDsagClctSttBssExpln},
+			sens_info_hld_yn = #{sensInfoHldYn},
+			sens_info_indiv_agre_yn = #{sensInfoIndivAgreYn},
+			sens_info_hld_stt_bss_expln = #{sensInfoHldSttBssExpln},
+			uii_hld_yn = #{uiiHldYn},
+			uii_indiv_agre_yn = #{uiiIndivAgreYn},
+			uii_hld_stt_bss_expln = #{uiiHldSttBssExpln},
+			prvc_evl_trgt_yn = #{prvcEvlTrgtYn},
+			hndl_pic_nm = #{hndlPicNm},
+			tdpty_splrcp_nm = #{tdptySplrcpNm},
+			tdpty_pvsn_bss_expln = #{tdptyPvsnBssExpln},
+			tdpty_pvsn_mttr = #{tdptyPvsnMttr},
+			prvc_prcs_cnsgn_bzenty_nm = #{prvcPrcsCnsgnBzentyNm},
+			prvc_cnsgn_ctrt_yn = #{prvcCnsgnCtrtYn},
+			prvc_cnsgn_fact_indct_yn = #{prvcCnsgnFactIndctYn}, 
+			prps_excl_utztn_pvsn_yn = #{prpsExclUtztnPvsnYn},
+			prps_excl_utztn_pvsn_bss_expln = #{prpsExclUtztnPvsnBssExpln},
+			mdfcn_ymd = NOW(),
+			mdfr_id = #{mdfrId}	 
+		WHERE
+			doc_clsf_no = #{docClsfNo} AND prvc_file_hld_prst_no = #{prvcFileHldPrstNo}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM
+			tb_dr_m_prvc_file_hld_prst
+		WHERE
+			doc_clsf_no = #{docClsfNo} AND prvc_file_hld_prst_no = #{prvcFileHldPrstNo}
+
+	</delete>
 
 	<select id="select" resultType="egovframework.com.edoc.clsf.domain.model.PrvcFileHldPrstVO">
 		SELECT
