@@ -25,9 +25,6 @@ public class DocClsfUpdateRequestDto implements Serializable {
 	@Schema(description = "문서분류명", example = "")
 	private String docClsfNm = "";
 
-	@Schema(description = "상위문서분류 번호", example = "")
-	private String upDocClsfNo;
-
 	@Schema(description = "개인정보포함여부", example = "")
 	private String prvcInclYn;
 
