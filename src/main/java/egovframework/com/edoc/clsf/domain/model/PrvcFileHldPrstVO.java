@@ -43,11 +43,11 @@ public class PrvcFileHldPrstVO implements Serializable {
 	@Schema(description = "개인정보 처리방법", example = "")
 	private String prvcPrcsMthdExpln; // 개인정보 처리방법
 	
-	@Schema(description = "보유기간 년(1/3/5/10/30/준영구/영구/직접입력)", example = "")
-	private String hldPrdDfyrs; // 보유기간 년(1/3/5/10/30/준영구/영구/직접입력)
+	@Schema(description = "보유기간 년(1/3/5/10/30/준영구(90)/영구(99)/직접입력(0))", example = "")
+	private Integer  hldPrdDfyrs; // 보유기간 년(1/3/5/10/30/준영구/영구/직접입력)
 	
 	@Schema(description = "보유기간 월", example = "")
-	private String hldPrdMmCnt; // 보유기간 월
+	private Integer hldPrdMmCnt; // 보유기간 월
 	
 	@Schema(description = "정보주체 개인정보항목", example = "")
 	private String infoMnbdPrvcMttr; // 정보주체 개인정보항목
