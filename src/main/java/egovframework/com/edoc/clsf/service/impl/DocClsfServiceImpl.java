@@ -1,7 +1,6 @@
 package egovframework.com.edoc.clsf.service.impl;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
@@ -54,17 +53,13 @@ public class DocClsfServiceImpl extends EgovAbstractServiceImpl implements DocCl
 
 	@Override
 	public int insert(DocClsfInsertRequestDto insertRequestDto) {
-		// TODO: PK 네이밍 규칙 적용
-		String docClsfNo = UUID.randomUUID().toString().substring(0, 20);
-		insertRequestDto.setDocClsfNo(docClsfNo);
 		if (!DocClsfSeCd.S.name().equals(insertRequestDto.getDocClsfSeCd())) {
 			insertRequestDto.setUseEn("Y");
 			insertRequestDto.setPrvcInclYn("N");
 		}
 		int docClsfInsertRet = docClsfMapper.insert(insertRequestDto);
 		if (docClsfInsertRet != 0 && isPrvcIncl(insertRequestDto.getDocClsfSeCd(), insertRequestDto.getPrvcInclYn())) {
-			insertRequestDto.getPrvcFileHldPrst().setDocClsfNo(docClsfNo);
-			insertRequestDto.getPrvcFileHldPrst().setPrvcFileHldPrstNo(UUID.randomUUID().toString().substring(0, 20));
+			insertRequestDto.getPrvcFileHldPrst().setDocClsfNo(insertRequestDto.getDocClsfNo());
 			prvcFileHldPrstMapper.insert(insertRequestDto.getPrvcFileHldPrst());
 		}
 //		createDocClsfHist(docClsfNo);

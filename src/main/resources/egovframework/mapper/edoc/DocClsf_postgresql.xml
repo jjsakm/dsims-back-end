@@ -79,11 +79,11 @@
 	
 	
     
-    <insert id="insert" >
+    <insert id="insert" useGeneratedKeys="true" keyColumn="doc_clsf_no" keyProperty="docClsfNo">
         INSERT INTO tb_dr_m_doc_clsf
 			(doc_clsf_no, doc_clsf_se_cd, doc_clsf_nm, up_doc_clsf_no, prvc_incl_yn, use_en, reg_ymd, rgtr_id, mdfcn_ymd, mdfr_id)
 		VALUES
-			(#{docClsfNo}, #{docClsfSeCd}, #{docClsfNm}, #{upDocClsfNo}, #{prvcInclYn}, #{useEn}, NOW(), #{rgtrId}, NOW(), #{mdfrId})
+			((SELECT 'MDOC' || to_char(NOW(), 'YYYYMMDD') || coalesce(max(substring(doc_clsf_no, 13)::integer)+1, 1) FROM tb_dr_m_doc_clsf WHERE doc_clsf_no LIKE 'MDOC' || to_char(NOW(), 'YYYYMMDD') || '%'), #{docClsfSeCd}, #{docClsfNm}, #{upDocClsfNo}, #{prvcInclYn}, #{useEn}, NOW(), #{rgtrId}, NOW(), #{mdfrId})
     </insert>
 
 	<update id="update">

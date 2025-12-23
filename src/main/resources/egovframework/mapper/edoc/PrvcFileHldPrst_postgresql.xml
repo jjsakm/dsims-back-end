@@ -45,7 +45,7 @@
 		tb_dr_m_prvc_file_hld_prst AS pfhp
 	</sql>
 
-    <insert id="insert" >
+    <insert id="insert" useGeneratedKeys="true" keyColumn="prvc_file_hld_prst_no" keyProperty="prvcFileHldPrstNo">
     INSERT INTO tb_dr_m_prvc_file_hld_prst
 	(
 		doc_clsf_no, prvc_file_hld_prst_no, dept_nm, file_nm, hld_prps, clct_stt_bss_expln, use_dept_nm,
@@ -58,7 +58,7 @@
 	 )
 	VALUES
 	(
-		#{docClsfNo}, #{prvcFileHldPrstNo}, #{deptNm}, #{fileNm}, #{hldPrps}, #{clctSttBssExpln}, #{useDeptNm},
+		#{docClsfNo}, (SELECT 'MPRV' || to_char(NOW(), 'YYYYMMDD') || coalesce(max(substring(prvc_file_hld_prst_no, 13)::integer)+1, 1) FROM tb_dr_m_prvc_file_hld_prst WHERE prvc_file_hld_prst_no LIKE 'MDOC' || to_char(NOW(), 'YYYYMMDD') || '%'), #{deptNm}, #{fileNm}, #{hldPrps}, #{clctSttBssExpln}, #{useDeptNm},
 	 	#{prvcPrcsMthdExpln}, #{hldPrdDfyrs}::NUMERIC, #{hldPrdMmCnt}::NUMERIC, #{infoMnbdPrvcMttr}, #{sttyAgtPrvcMttr},
 		#{rrnoClctYn}, #{rrnoClctSttBssExpln}, #{infoMnbdAgreYn}, #{infoMnbdDsagClctSttBssExpln},
 	  	#{sensInfoHldYn}, #{sensInfoIndivAgreYn}, #{sensInfoHldSttBssExpln}, #{uiiHldYn}, #{uiiIndivAgreYn},
