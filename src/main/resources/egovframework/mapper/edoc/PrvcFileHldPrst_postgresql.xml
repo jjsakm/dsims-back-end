@@ -6,7 +6,8 @@
 	<sql id="fields">
 		pfhp.doc_clsf_no,
 		pfhp.prvc_file_hld_prst_no,
-		pfhp.dept_nm, file_nm,
+		pfhp.dept_nm,
+		pfhp.file_nm,
 		pfhp.hld_prps,
 		pfhp.clct_stt_bss_expln,
 		pfhp.use_dept_nm,
@@ -111,7 +112,7 @@
 		DELETE FROM
 			tb_dr_m_prvc_file_hld_prst
 		WHERE
-			doc_clsf_no = #{docClsfNo} AND prvc_file_hld_prst_no = #{prvcFileHldPrstNo}
+			doc_clsf_no = #{docClsfNo}
 
 	</delete>
 

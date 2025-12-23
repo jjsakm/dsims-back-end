@@ -3,9 +3,9 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="egovframework.com.edoc.clsf.domain.repository.DocClsfMapper">
 	
-	<resultMap id="docClsf" type="egovframework.com.edoc.clsf.domain.model.DocClsfVO">
-		<result column="doc_clsf_no" property="docClsfNo"/>
-		<association property="prvcFileHldPrst" column="doc_clsf_no" select="egovframework.com.edoc.clsf.domain.repository.PrvcFileHldPrstMapper.select" />
+	<resultMap id="docClsf" type="egovframework.com.edoc.clsf.domain.model.DocClsfVO" autoMapping="true">
+		<association property="prvcFileHldPrst" columnPrefix="pfhp_" autoMapping="true"/>
+		<!-- <association property="prvcFileHldPrst" column="doc_clsf_no" select="egovframework.com.edoc.clsf.domain.repository.PrvcFileHldPrstMapper.select" /> -->
 	</resultMap>
 	
 	<sql id="fields">
@@ -24,7 +24,42 @@
 		dcnm.doc_sclsf_no,
 		dcnm.doc_lclsf_nm,
 		dcnm.doc_mclsf_nm,
-		dcnm.doc_sclsf_nm
+		dcnm.doc_sclsf_nm,
+		pfhp.doc_clsf_no AS pfhp_doc_clsf_no,
+		pfhp.prvc_file_hld_prst_no AS pfhp_prvc_file_hld_prst_no,
+		pfhp.dept_nm AS pfhp_dept_nm,
+		pfhp.file_nm AS pfhp_file_nm,
+		pfhp.hld_prps AS pfhp_hld_prps,
+		pfhp.clct_stt_bss_expln AS pfhp_clct_stt_bss_expln,
+		pfhp.use_dept_nm AS pfhp_use_dept_nm,
+		pfhp.prvc_prcs_mthd_expln AS pfhp_prvc_prcs_mthd_expln,
+		pfhp.hld_prd_dfyrs AS pfhp_hld_prd_dfyrs,
+		pfhp.hld_prd_mm_cnt AS pfhp_hld_prd_mm_cnt,
+		pfhp.info_mnbd_prvc_mttr AS pfhp_info_mnbd_prvc_mttr,
+		pfhp.stty_agt_prvc_mttr AS pfhp_stty_agt_prvc_mttr,
+		pfhp.rrno_clct_yn AS pfhp_rrno_clct_yn,
+		pfhp.rrno_clct_stt_bss_expln AS pfhp_rrno_clct_stt_bss_expln,
+		pfhp.info_mnbd_agre_yn AS pfhp_info_mnbd_agre_yn,
+		pfhp.info_mnbd_dsag_clct_stt_bss_expln AS pfhp_info_mnbd_dsag_clct_stt_bss_expln,
+		pfhp.sens_info_hld_yn AS pfhp_sens_info_hld_yn,
+		pfhp.sens_info_indiv_agre_yn AS pfhp_sens_info_indiv_agre_yn,
+		pfhp.sens_info_hld_stt_bss_expln AS pfhp_sens_info_hld_stt_bss_expln,
+		pfhp.uii_hld_yn, uii_indiv_agre_yn AS pfhp_uii_indiv_agre_yn,
+		pfhp.uii_hld_stt_bss_expln AS pfhp_uii_hld_stt_bss_expln,
+		pfhp.prvc_evl_trgt_yn AS pfhp_prvc_evl_trgt_yn,
+		pfhp.hndl_pic_nm AS pfhp_hndl_pic_nm,
+		pfhp.tdpty_splrcp_nm AS pfhp_tdpty_splrcp_nm,
+		pfhp.tdpty_pvsn_bss_expln AS pfhp_tdpty_pvsn_bss_expln,
+		pfhp.tdpty_pvsn_mttr AS pfhp_tdpty_pvsn_mttr,
+		pfhp.prvc_prcs_cnsgn_bzenty_nm AS pfhp_prvc_prcs_cnsgn_bzenty_nm,
+		pfhp.prvc_cnsgn_ctrt_yn AS pfhp_prvc_cnsgn_ctrt_yn,
+		pfhp.prvc_cnsgn_fact_indct_yn AS pfhp_prvc_cnsgn_fact_indct_yn,
+		pfhp.prps_excl_utztn_pvsn_yn AS pfhp_prps_excl_utztn_pvsn_yn,
+		pfhp.prps_excl_utztn_pvsn_bss_expln AS pfhp_prps_excl_utztn_pvsn_bss_expln,
+		pfhp.reg_ymd AS pfhp_reg_ymd,
+		pfhp.rgtr_id AS pfhp_rgtr_id,
+		pfhp.mdfcn_ymd AS pfhp_mdfcn_ymd,
+		pfhp.mdfr_id AS pfhp_mdfr_id
 	</sql>
 	
 	<sql id="fromTables">
@@ -37,6 +72,9 @@
 			) 
 		SELECT cte.doc_clsf_no,  doc_clsf_no_arr[CARDINALITY(doc_clsf_no_arr)] AS doc_lclsf_no, doc_clsf_no_arr[CARDINALITY(doc_clsf_no_arr)-1] AS doc_mclsf_no, doc_clsf_no_arr[CARDINALITY(doc_clsf_no_arr)-2] AS doc_sclsf_no, doc_clsf_nm_arr[CARDINALITY(doc_clsf_no_arr)] AS doc_lclsf_nm, doc_clsf_nm_arr[CARDINALITY(doc_clsf_no_arr)-1] AS doc_mclsf_nm, doc_clsf_nm_arr[CARDINALITY(doc_clsf_no_arr)-2] AS doc_sclsf_nm FROM cte WHERE cte.doc_clsf_se_cd='L'
 		) AS dcnm ON dc.doc_clsf_no=dcnm.doc_clsf_no
+		LEFT JOIN
+			tb_dr_m_prvc_file_hld_prst AS pfhp ON pfhp.doc_clsf_no=dc.doc_clsf_no
+		
 	</sql>
 	
 	

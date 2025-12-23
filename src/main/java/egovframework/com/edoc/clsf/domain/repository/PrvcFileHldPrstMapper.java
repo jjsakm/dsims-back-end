@@ -14,5 +14,5 @@ public interface PrvcFileHldPrstMapper {
 
 	int update(PrvcFileHldPrstUpsertRequestDto dto);
 
-	int delete(String docClsfNo, String prvcFileHldPrstNo);
+	int delete(String docClsfNo);
 }
