@@ -19,113 +19,113 @@ public class PrvcFileHldPrstVO implements Serializable {
 	 */
 	private static final long serialVersionUID = -6239302856645724370L;
 
-	@Schema(description = "doc_clsf_no", example = "")
-	private String docClsfNo;
+	@Schema(description = "문서분류번호", example = "")
+	private String docClsfNo; // 문서분류번호
 	
-	@Schema(description = "prvc_file_hld_prst_no", example = "")
-	private String prvcFileHldPrstNo;
+	@Schema(description = "개인정보파일보유현황번호", example = "")
+	private String prvcFileHldPrstNo; // 개인정보파일보유현황번호
 	
-	@Schema(description = "dept_nm", example = "")
-	private String deptNm;
+	@Schema(description = "부서명", example = "")
+	private String deptNm; // 부서명
 	
-	@Schema(description = "file_nm", example = "")
-	private String fileNm;
+	@Schema(description = "파일명", example = "")
+	private String fileNm; // 파일명
 	
-	@Schema(description = "hld_prps", example = "")
-	private String hldPrps;
+	@Schema(description = "보유목적", example = "")
+	private String hldPrps; // 보유목적
 	
-	@Schema(description = "clct_stt_bss_expln", example = "")
-	private String clctSttBssExpln;
+	@Schema(description = "수집근거(법령)", example = "")
+	private String clctSttBssExpln; // 수집근거(법령)
 	
-	@Schema(description = "use_dept_nm", example = "")
-	private String useDeptNm;
+	@Schema(description = "사용부서명", example = "")
+	private String useDeptNm; // 사용부서명
 	
-	@Schema(description = "prvc_prcs_mthd_expln", example = "")
-	private String prvcPrcsMthdExpln;
+	@Schema(description = "개인정보 처리방법", example = "")
+	private String prvcPrcsMthdExpln; // 개인정보 처리방법
 	
-	@Schema(description = "hld_prd_dfyrs", example = "")
-	private Integer hldPrdDfyrs;
+	@Schema(description = "보유기간 년(1/3/5/10/30/준영구/영구/직접입력)", example = "")
+	private String hldPrdDfyrs; // 보유기간 년(1/3/5/10/30/준영구/영구/직접입력)
 	
-	@Schema(description = "hld_prd_mm_cnt", example = "")
-	private Integer hldPrdMmCnt;
+	@Schema(description = "보유기간 월", example = "")
+	private String hldPrdMmCnt; // 보유기간 월
 	
-	@Schema(description = "info_mnbd_prvc_mttr", example = "")
-	private String infoMnbdPrvcMttr;
+	@Schema(description = "정보주체 개인정보항목", example = "")
+	private String infoMnbdPrvcMttr; // 정보주체 개인정보항목
 	
-	@Schema(description = "stty_agt_prvc_mttr", example = "")
-	private String sttyAgtPrvcMttr;
+	@Schema(description = "법정대리인 개인정보항목", example = "")
+	private String sttyAgtPrvcMttr; // 법정대리인 개인정보항목
 	
-	@Schema(description = "rrno_clct_yn", example = "")
-	private String rrnoClctYn;
+	@Schema(description = "주민등록번호 수집여부(Y:수집, N:미수집)", example = "")
+	private String rrnoClctYn; // 주민등록번호 수집여부(Y:수집, N:미수집)
 	
-	@Schema(description = "rrno_clct_stt_bss_expln", example = "")
-	private String rrnoClctSttBssExpln;
+	@Schema(description = "주민등록번호 수집 법령근거", example = "")
+	private String rrnoClctSttBssExpln; // 주민등록번호 수집 법령근거
 	
-	@Schema(description = "info_mnbd_agre_yn", example = "")
-	private String infoMnbdAgreYn;
+	@Schema(description = "정보주체 동의여부(Y:동의, N:미동의)", example = "")
+	private String infoMnbdAgreYn; // 정보주체 동의여부(Y:동의, N:미동의)
 	
-	@Schema(description = "info_mnbd_dsag_clct_stt_bss_expln", example = "")
-	private String infoMnbdDsagClctSttBssExpln;
+	@Schema(description = "정보주체 동의 없이 수집 법령근거", example = "")
+	private String infoMnbdDsagClctSttBssExpln; // 정보주체 동의 없이 수집 법령근거
 	
-	@Schema(description = "sens_info_hld_yn", example = "")
-	private String sensInfoHldYn;
+	@Schema(description = "민감정보 보유여부(Y:보유, N:미보유)", example = "")
+	private String sensInfoHldYn; // 민감정보 보유여부(Y:보유, N:미보유)
 	
-	@Schema(description = "sens_info_indiv_agre_yn", example = "")
-	private String sensInfoIndivAgreYn;
+	@Schema(description = "민감정보 별도 동의여부(Y:동의, N:미동의)", example = "")
+	private String sensInfoIndivAgreYn; // 민감정보 별도 동의여부(Y:동의, N:미동의)
 	
-	@Schema(description = "sens_info_hld_stt_bss_expln", example = "")
-	private String sensInfoHldSttBssExpln;
+	@Schema(description = "민감정보 보유 법령근거", example = "")
+	private String sensInfoHldSttBssExpln; // 민감정보 보유 법령근거
 	
-	@Schema(description = "uii_hld_yn", example = "")
-	private String uiiHldYn;
+	@Schema(description = "고유식별정보 보유여부(Y:보유, N:미보유)", example = "")
+	private String uiiHldYn; // 고유식별정보 보유여부(Y:보유, N:미보유)
 	
-	@Schema(description = "uii_indiv_agre_yn", example = "")
-	private String uiiIndivAgreYn;
+	@Schema(description = "고유식별정보 별도 동의여부(Y:동의, N:미동의)", example = "")
+	private String uiiIndivAgreYn; // 고유식별정보 별도 동의여부(Y:동의, N:미동의)
 	
-	@Schema(description = "uii_hld_stt_bss_expln", example = "")
-	private String uiiHldSttBssExpln;
+	@Schema(description = "고유식별정보 보유 법령근거", example = "")
+	private String uiiHldSttBssExpln; // 고유식별정보 보유 법령근거
 	
-	@Schema(description = "prvc_evl_trgt_yn", example = "")
-	private String prvcEvlTrgtYn;
+	@Schema(description = "개인정보영향평가 대상여부(Y:대상, N:미대상)", example = "")
+	private String prvcEvlTrgtYn; // 개인정보영향평가 대상여부(Y:대상, N:미대상)
 	
-	@Schema(description = "hndl_pic_nm", example = "")
-	private String hndlPicNm;
+	@Schema(description = "취급담당자", example = "")
+	private String hndlPicNm; // 취급담당자
 	
-	@Schema(description = "tdpty_splrcp_nm", example = "")
-	private String tdptySplrcpNm;
+	@Schema(description = "제3자 제공받는 자", example = "")
+	private String tdptySplrcpNm; // 제3자 제공받는 자
 	
-	@Schema(description = "tdpty_pvsn_bss_expln", example = "")
-	private String tdptyPvsnBssExpln;
+	@Schema(description = "제3자 제공 근거", example = "")
+	private String tdptyPvsnBssExpln; // 제3자 제공 근거
 	
-	@Schema(description = "tdpty_pvsn_mttr", example = "")
-	private String tdptyPvsnMttr;
+	@Schema(description = "제3자 제공 항목", example = "")
+	private String tdptyPvsnMttr; // 제3자 제공 항목
 	
-	@Schema(description = "prvc_prcs_cnsgn_bzenty_nm", example = "")
-	private String prvcPrcsCnsgnBzentyNm;
+	@Schema(description = "개인정보처리 위탁 업체명", example = "")
+	private String prvcPrcsCnsgnBzentyNm; // 개인정보처리 위탁 업체명
 	
-	@Schema(description = "prvc_cnsgn_ctrt_yn", example = "")
-	private String prvcCnsgnCtrtYn;
+	@Schema(description = "개인정보위탁계약 여부(Y:위탁계약, N:위탁계약 아님)", example = "")
+	private String prvcCnsgnCtrtYn; // 개인정보위탁계약 여부(Y:위탁계약, N:위탁계약 아님)
 	
-	@Schema(description = "prvc_cnsgn_fact_indct_yn", example = "")
-	private String prvcCnsgnFactIndctYn;
+	@Schema(description = "개인정보위탁사실 게재여부(Y:게재, N:미게재)", example = "")
+	private String prvcCnsgnFactIndctYn; // 개인정보위탁사실 게재여부(Y:게재, N:미게재)
 	
-	@Schema(description = "prps_excl_utztn_pvsn_yn", example = "")
-	private String prpsExclUtztnPvsnYn;
+	@Schema(description = "목적 외 이용.제공 여부(Y:제공, N:미제공)", example = "")
+	private String prpsExclUtztnPvsnYn; // 목적 외 이용.제공 여부(Y:제공, N:미제공)
 	
-	@Schema(description = "prps_excl_utztn_pvsn_bss_expln", example = "")
-	private String prpsExclUtztnPvsnBssExpln;
+	@Schema(description = "목적 외 이용.제공 근거", example = "")
+	private String prpsExclUtztnPvsnBssExpln; // 목적 외 이용.제공 근거
 	
-	@Schema(description = "reg_ymd", example = "")
-	private Date regYmd;
+	@Schema(description = "등록일자", example = "")
+	private Date regYmd; // 등록일자
 	
-	@Schema(description = "rgtr_id", example = "")
-	private String rgtrId;
+	@Schema(description = "등록자", example = "")
+	private String rgtrId; // 등록자
 	
-	@Schema(description = "mdfcn_ymd", example = "")
-	private Date mdfcnYmd;
+	@Schema(description = "수정일자", example = "")
+	private Date mdfcnYmd; // 수정일자
 	
-	@Schema(description = "mdfr_id", example = "")
-	private String mdfrId;
+	@Schema(description = "수정자", example = "")
+	private String mdfrId; // 수정자
 
 	/**
 	 * toString 메소드를 대치한다.

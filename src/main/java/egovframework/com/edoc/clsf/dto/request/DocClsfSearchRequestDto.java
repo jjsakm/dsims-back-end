@@ -30,10 +30,10 @@ public class DocClsfSearchRequestDto implements Serializable {
 	@Schema(description = "문서분류명", example = "")
 	private String docClsfNm = "";
 
-	@Schema(description = "개인정보포함여부", example = "")
+	@Schema(description = "개인정보 포함여부(Y:포함, N:미포함)", example = "")
 	private String prvcInclYn;
 
-	@Schema(description = "사용유무", example = "")
+	@Schema(description = "사용유무(Y:사용, N:미사용)", example = "")
 	private String useEn;
 
 	@Schema(description = "현재페이지", example = "")

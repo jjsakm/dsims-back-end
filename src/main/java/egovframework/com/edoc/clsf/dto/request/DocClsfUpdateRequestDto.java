@@ -19,20 +19,20 @@ public class DocClsfUpdateRequestDto implements Serializable {
 	 */
 	private static final long serialVersionUID = 6800848624760409230L;
 
-	@Schema(description = "문서분류 번호", example = "")
-	private String docClsfNo;
-
+	@Schema(description = "문서분류번호", example = "")
+	private String docClsfNo; // 문서분류번호
+	
 	@Schema(description = "문서분류명", example = "")
-	private String docClsfNm = "";
-
-	@Schema(description = "상위문서분류 번호", example = "")
-	private String upDocClsfNo;
-
-	@Schema(description = "개인정보포함여부", example = "")
-	private String prvcInclYn;
-
-	@Schema(description = "사용유무", example = "")
-	private String useEn;
+	private String docClsfNm; // 문서분류명
+	
+	@Schema(description = "상위문서분류번호", example = "")
+	private String upDocClsfNo; // 상위문서분류번호
+	
+	@Schema(description = "개인정보 포함여부(Y:포함, N:미포함)", example = "")
+	private String prvcInclYn; // 개인정보 포함여부(Y:포함, N:미포함)
+	
+	@Schema(description = "사용유무(Y:사용, N:미사용)", example = "")
+	private String useEn; // 사용유무(Y:사용, N:미사용)
 
 	@Schema(description = "수정자", example = "", hidden = true)
 	private String mdfrId;

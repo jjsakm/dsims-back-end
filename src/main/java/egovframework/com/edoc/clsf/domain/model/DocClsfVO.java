@@ -19,61 +19,44 @@ public class DocClsfVO implements Serializable {
 	 */
 	private static final long serialVersionUID = -3067138537477155300L;
 
-	@Schema(description = "문서분류 번호", example="")
-	private String docClsfNo;
+	@Schema(description = "문서분류번호", example = "")
+	private String docClsfNo; // 문서분류번호
 
-	@Schema(description = "문서분류 구분코드", example="")
-    private String docClsfSeCd;
+	@Schema(description = "문서분류 구분코드(L:대,M:중,S:소)", example = "")
+	private String docClsfSeCd; // 문서분류 구분코드(L:대,M:중,S:소)
 
-	@Schema(description = "문서분류명", example="")
-    private String docClsfNm = "";
+	@Schema(description = "문서분류명", example = "")
+	private String docClsfNm; // 문서분류명
 
-	@Schema(description = "상위문서분류 번호", example="")
-	private String upDocClsfNo;
-	
-	@Schema(description = "대분류 번호", example="")
-	private String docLclsfNo;
-	
-	@Schema(description = "중분류 번호", example="")
-	private String docMclsfNo;
+	@Schema(description = "상위문서분류번호", example = "")
+	private String upDocClsfNo; // 상위문서분류번호
 
-	@Schema(description = "소분류 번호", example="")
-    private String docSclsfNo;
-	
-	@Schema(description = "대분류명", example="")
-	private String docLclsfNm;
-	
-	@Schema(description = "중분류명", example="")
-	private String docMclsfNm;
+	@Schema(description = "개인정보 포함여부(Y:포함, N:미포함)", example = "")
+	private String prvcInclYn; // 개인정보 포함여부(Y:포함, N:미포함)
 
-	@Schema(description = "소분류명", example="")
-    private String docSclsfNm;
+	@Schema(description = "사용유무(Y:사용, N:미사용)", example = "")
+	private String useEn; // 사용유무(Y:사용, N:미사용)
 
-	@Schema(description = "개인정보포함여부", example="")
-    private String prvcInclYn ;
+	@Schema(description = "등록일자", example = "")
+	private Date regYmd; // 등록일자
 
-	@Schema(description = "사용유무", example="")
-    private String useEn;
+	@Schema(description = "등록자", example = "")
+	private String rgtrId; // 등록자
 
-	@Schema(description = "등록일자")
-    private Date regYmd;
+	@Schema(description = "수정일자", example = "")
+	private Date mdfcnYmd; // 수정일자
 
-	@Schema(description = "등록자", example="")
-    private String rgtrId;
+	@Schema(description = "수정자", example = "")
+	private String mdfrId; // 수정자
 
-	@Schema(description = "수정일자")
-    private Date mdfcnYmd;
-
-	@Schema(description = "수정자", example="")
-    private String mdfrId;
-	
-	@Schema(description = "개인정보파일보유현황", example="")
+	@Schema(description = "개인정보파일보유현황", example = "")
 	private PrvcFileHldPrstVO prvcFileHldPrst;
-    /**
-     * toString 메소드를 대치한다.
-     */
-    public String toString() {
-	return ToStringBuilder.reflectionToString(this);
-    }
+
+	/**
+	 * toString 메소드를 대치한다.
+	 */
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
+	}
 
 }

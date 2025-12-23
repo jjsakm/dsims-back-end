@@ -2,8 +2,6 @@ package egovframework.com.edoc.clsf.dto.request;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.NotNull;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -20,25 +18,24 @@ public class DocClsfInsertRequestDto implements Serializable {
 	 */
 	private static final long serialVersionUID = -6478162443783502376L;
 
-	@Schema(description = "문서분류 번호", example = "", hidden = true)
-	private String docClsfNo;
-
-	@Schema(description = "문서분류 구분코드", example = "")
-	@NotNull
-	private String docClsfSeCd;
-
+	@Schema(description = "문서분류번호", example = "")
+	private String docClsfNo; // 문서분류번호
+	
+	@Schema(description = "문서분류 구분코드(L:대,M:중,S:소)", example = "")
+	private String docClsfSeCd; // 문서분류 구분코드(L:대,M:중,S:소)
+	
 	@Schema(description = "문서분류명", example = "")
-	private String docClsfNm = "";
-
-	@Schema(description = "상위문서분류 번호", example = "")
-	private String upDocClsfNo;
-
-	@Schema(description = "개인정보포함여부", example = "")
-	private String prvcInclYn;
-
-	@Schema(description = "사용유무", example = "")
-	private String useEn;
-
+	private String docClsfNm; // 문서분류명
+	
+	@Schema(description = "상위문서분류번호", example = "")
+	private String upDocClsfNo; // 상위문서분류번호
+	
+	@Schema(description = "개인정보 포함여부(Y:포함, N:미포함)", example = "")
+	private String prvcInclYn; // 개인정보 포함여부(Y:포함, N:미포함)
+	
+	@Schema(description = "사용유무(Y:사용, N:미사용)", example = "")
+	private String useEn; // 사용유무(Y:사용, N:미사용)
+	
 	@Schema(description = "등록자", example = "", hidden = true)
 	private String rgtrId;
 
