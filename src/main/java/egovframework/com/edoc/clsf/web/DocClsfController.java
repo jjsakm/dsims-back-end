@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -172,4 +173,14 @@ public class DocClsfController {
 		return resultVoHelper.buildFromMap(resultMap, ResponseCode.SUCCESS);
 	}
 
+	@Operation(summary = "문서분류 삭제", description = "문서분류를 삭제 처리", security = {
+			@SecurityRequirement(name = "Authorization") }, tags = { "DocClsfController" })
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "삭제 성공"),
+			@ApiResponse(responseCode = "403", description = "인가된 사용자가 아님") })
+	@DeleteMapping(value = "/{docClsfNo}/delete")
+	public ResultVO delete(@PathVariable("docClsfNo") String docClsfNo) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		docClsfService.delete(docClsfNo);
+		return resultVoHelper.buildFromMap(resultMap, ResponseCode.SUCCESS);
+	}
 }

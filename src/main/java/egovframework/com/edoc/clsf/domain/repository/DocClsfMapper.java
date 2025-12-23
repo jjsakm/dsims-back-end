@@ -25,4 +25,6 @@ public interface DocClsfMapper {
 	int insert(DocClsfInsertRequestDto insertRequestDto);
 
 	int update(DocClsfUpdateRequestDto updateRequestDto);
+
+	int delete(String docClsfNo);
 }

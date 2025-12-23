@@ -15,4 +15,5 @@ public interface DocClsfService {
 	int selectListTotCnt(DocClsfSearchRequestDto searchRequestDto);
 	int insert(DocClsfInsertRequestDto insertRequestDto);
 	int update(DocClsfUpdateRequestDto docClsfUpdateRequestDto);
+	void delete(String docClsfNo);
 }

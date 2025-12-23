@@ -54,6 +54,7 @@ public class DocClsfServiceImpl extends EgovAbstractServiceImpl implements DocCl
 
 	@Override
 	public int insert(DocClsfInsertRequestDto insertRequestDto) {
+		// TODO: PK 네이밍 규칙 적용
 		String docClsfNo = UUID.randomUUID().toString().substring(0, 20);
 		insertRequestDto.setDocClsfNo(docClsfNo);
 		if (!DocClsfSeCd.S.name().equals(insertRequestDto.getDocClsfSeCd())) {
@@ -63,8 +64,7 @@ public class DocClsfServiceImpl extends EgovAbstractServiceImpl implements DocCl
 		int docClsfInsertRet = docClsfMapper.insert(insertRequestDto);
 		if (docClsfInsertRet != 0 && isPrvcIncl(insertRequestDto.getDocClsfSeCd(), insertRequestDto.getPrvcInclYn())) {
 			insertRequestDto.getPrvcFileHldPrst().setDocClsfNo(docClsfNo);
-			insertRequestDto.getPrvcFileHldPrst()
-					.setPrvcFileHldPrstNo(UUID.randomUUID().toString().substring(0, 20));
+			insertRequestDto.getPrvcFileHldPrst().setPrvcFileHldPrstNo(UUID.randomUUID().toString().substring(0, 20));
 			prvcFileHldPrstMapper.insert(insertRequestDto.getPrvcFileHldPrst());
 		}
 //		createDocClsfHist(docClsfNo);
@@ -85,11 +85,34 @@ public class DocClsfServiceImpl extends EgovAbstractServiceImpl implements DocCl
 				}
 			}
 		} else {
-			prvcFileHldPrstMapper.delete(old.getDocClsfNo(), old.getPrvcFileHldPrst().getPrvcFileHldPrstNo());
+			prvcFileHldPrstMapper.delete(old.getDocClsfNo());
 		}
 		return ret;
 	}
 
+	@Override
+	public void delete(String docClsfNo) {
+		DocClsfVO docClsf = docClsfMapper.select(docClsfNo);
+		if (DocClsfSeCd.S.name().equals(docClsf.getDocClsfSeCd())) {
+			// TODO : 해당 문서분류 사용하는 전자문서 있는지 체크 후 처리 로직 추가 필요
+			deleteLeafDocClsf(docClsfNo);
+			// TODO : createDocClsfHist
+		} else {
+			List<DocClsfVO> children = getChildren(docClsfNo);
+			if (!children.isEmpty()) {
+				for (DocClsfVO child : children) {
+					delete(child.getDocClsfNo());
+				}
+			}
+			docClsfMapper.delete(docClsfNo);
+			// TODO : createDocClsfHist
+		}
+	}
+
+	private void deleteLeafDocClsf(String docClsfNo) {
+		prvcFileHldPrstMapper.delete(docClsfNo);
+		docClsfMapper.delete(docClsfNo);
+	}
 	/*
 	 * private void createDocClsfHist(String docClsfNo) { DocClsfVO docClsf =
 	 * docClsfMapper.select(docClsfNo); DocClsfHistVO docClsfHist = new
@@ -100,8 +123,6 @@ public class DocClsfServiceImpl extends EgovAbstractServiceImpl implements DocCl
 	 */
 
 	private boolean isPrvcIncl(String docClsfSeCd, String prvcInclYn) {
-		System.out.println(prvcInclYn + "!!!!");
-		System.out.println("Y".equals(prvcInclYn) && DocClsfSeCd.S.name().equals(docClsfSeCd));
 		return "Y".equals(prvcInclYn) && DocClsfSeCd.S.name().equals(docClsfSeCd);
 
 	}
