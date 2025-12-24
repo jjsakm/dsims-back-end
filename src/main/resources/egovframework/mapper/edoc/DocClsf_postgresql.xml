@@ -62,13 +62,17 @@
 		pfhp.mdfr_id AS pfhp_mdfr_id
 	</sql>
 	
+	<sql id="mainTable">
+		tb_dr_m_doc_clsf
+	</sql>
+	
 	<sql id="fromTables">
-		tb_dr_m_doc_clsf AS dc
+		<include refid="mainTable" /> AS dc
 		LEFT JOIN 
 		(WITH RECURSIVE cte(doc_clsf_no, doc_clsf_se_cd, up_doc_clsf_no, doc_clsf_no_arr, doc_clsf_nm_arr) AS (
-			SELECT t.doc_clsf_no, t.doc_clsf_se_cd, t.up_doc_clsf_no, CAST(ARRAY[t.doc_clsf_no] AS text[]) AS doc_clsf_no_arr, CAST(ARRAY[t.doc_clsf_nm] AS text[]) AS doc_clsf_nm_arr FROM tb_dr_m_doc_clsf AS t 
+			SELECT t.doc_clsf_no, t.doc_clsf_se_cd, t.up_doc_clsf_no, CAST(ARRAY[t.doc_clsf_no] AS text[]) AS doc_clsf_no_arr, CAST(ARRAY[t.doc_clsf_nm] AS text[]) AS doc_clsf_nm_arr FROM <include refid="mainTable" /> AS t 
 			UNION ALL
-			SELECT cte.doc_clsf_no, p.doc_clsf_se_cd, p.up_doc_clsf_no, cte.doc_clsf_no_arr || p.doc_clsf_no, cte.doc_clsf_nm_arr || p.doc_clsf_nm FROM tb_dr_m_doc_clsf AS p JOIN cte ON p.doc_clsf_no=cte.up_doc_clsf_no
+			SELECT cte.doc_clsf_no, p.doc_clsf_se_cd, p.up_doc_clsf_no, cte.doc_clsf_no_arr || p.doc_clsf_no, cte.doc_clsf_nm_arr || p.doc_clsf_nm FROM <include refid="mainTable" /> AS p JOIN cte ON p.doc_clsf_no=cte.up_doc_clsf_no
 			) 
 		SELECT cte.doc_clsf_no,  doc_clsf_no_arr[CARDINALITY(doc_clsf_no_arr)] AS doc_lclsf_no, doc_clsf_no_arr[CARDINALITY(doc_clsf_no_arr)-1] AS doc_mclsf_no, doc_clsf_no_arr[CARDINALITY(doc_clsf_no_arr)-2] AS doc_sclsf_no, doc_clsf_nm_arr[CARDINALITY(doc_clsf_no_arr)] AS doc_lclsf_nm, doc_clsf_nm_arr[CARDINALITY(doc_clsf_no_arr)-1] AS doc_mclsf_nm, doc_clsf_nm_arr[CARDINALITY(doc_clsf_no_arr)-2] AS doc_sclsf_nm FROM cte WHERE cte.doc_clsf_se_cd='L'
 		) AS dcnm ON dc.doc_clsf_no=dcnm.doc_clsf_no
@@ -80,14 +84,14 @@
 	
     
     <insert id="insert" useGeneratedKeys="true" keyColumn="doc_clsf_no" keyProperty="docClsfNo">
-        INSERT INTO tb_dr_m_doc_clsf
+        INSERT INTO <include refid="mainTable" />
 			(doc_clsf_no, doc_clsf_se_cd, doc_clsf_nm, up_doc_clsf_no, prvc_incl_yn, use_en, reg_ymd, rgtr_id, mdfcn_ymd, mdfr_id)
 		VALUES
-			((SELECT 'MDOC' || to_char(NOW(), 'YYYYMMDD') || coalesce(max(substring(doc_clsf_no, 13)::integer)+1, 1) FROM tb_dr_m_doc_clsf WHERE doc_clsf_no LIKE 'MDOC' || to_char(NOW(), 'YYYYMMDD') || '%'), #{docClsfSeCd}, #{docClsfNm}, #{upDocClsfNo}, #{prvcInclYn}, #{useEn}, NOW(), #{rgtrId}, NOW(), #{mdfrId})
+			((SELECT 'MDOC' || to_char(NOW(), 'YYYYMMDD') || coalesce(max(substring(doc_clsf_no, 13)::integer)+1, 1) FROM <include refid="mainTable" /> WHERE doc_clsf_no LIKE 'MDOC' || to_char(NOW(), 'YYYYMMDD') || '%'), #{docClsfSeCd}, #{docClsfNm}, #{upDocClsfNo}, #{prvcInclYn}, #{useEn}, NOW(), #{rgtrId}, NOW(), #{mdfrId})
     </insert>
 
 	<update id="update">
-		UPDATE tb_dr_m_doc_clsf
+		UPDATE <include refid="mainTable" />
 		SET
 			doc_clsf_nm = #{docClsfNm},
 			up_doc_clsf_no = #{upDocClsfNo},
@@ -101,7 +105,7 @@
 	
 	<delete id="delete">
 		DELETE FROM
-			tb_dr_m_doc_clsf
+			<include refid="mainTable" />
 		WHERE
 			doc_clsf_no = #{docClsfNo}
 
@@ -215,7 +219,7 @@
 		SELECT 
 			COUNT(*)
 		FROM
-			tb_dr_m_doc_clsf
+			<include refid="mainTable" />
 	</sql>
 
 	<select id="countByDocClsfNm" resultType="int">

@@ -41,36 +41,97 @@
 		pfhp.mdfr_id
 	</sql>
 	
-	<sql id="fromTables">
+	<sql id="mainTable">
 		tb_dr_m_prvc_file_hld_prst AS pfhp
+	</sql>
+	
+	<sql id="fromTables">
+		<include refid="mainTable" />
 	</sql>
 
     <insert id="insert" useGeneratedKeys="true" keyColumn="prvc_file_hld_prst_no" keyProperty="prvcFileHldPrstNo">
-    INSERT INTO tb_dr_m_prvc_file_hld_prst
+    INSERT INTO <include refid="mainTable" />
 	(
-		doc_clsf_no, prvc_file_hld_prst_no, dept_nm, file_nm, hld_prps, clct_stt_bss_expln, use_dept_nm,
-		prvc_prcs_mthd_expln, hld_prd_dfyrs, hld_prd_mm_cnt, info_mnbd_prvc_mttr, stty_agt_prvc_mttr, 
-		rrno_clct_yn, rrno_clct_stt_bss_expln, info_mnbd_agre_yn, info_mnbd_dsag_clct_stt_bss_expln,
-	  	sens_info_hld_yn, sens_info_indiv_agre_yn, sens_info_hld_stt_bss_expln, uii_hld_yn, uii_indiv_agre_yn, 
-	 	uii_hld_stt_bss_expln, prvc_evl_trgt_yn, hndl_pic_nm, tdpty_splrcp_nm, tdpty_pvsn_bss_expln, 
-	  	tdpty_pvsn_mttr, prvc_prcs_cnsgn_bzenty_nm, prvc_cnsgn_ctrt_yn, prvc_cnsgn_fact_indct_yn, 
-	  	prps_excl_utztn_pvsn_yn, prps_excl_utztn_pvsn_bss_expln, reg_ymd, rgtr_id, mdfcn_ymd, mdfr_id
+		doc_clsf_no, prvc_file_hld_prst_no,
+		dept_nm,
+		file_nm,
+		hld_prps,
+		clct_stt_bss_expln,
+		use_dept_nm,
+		prvc_prcs_mthd_expln,
+		hld_prd_dfyrs,
+		hld_prd_mm_cnt,
+		info_mnbd_prvc_mttr,
+		stty_agt_prvc_mttr,
+		rrno_clct_yn,
+		rrno_clct_stt_bss_expln,
+		info_mnbd_agre_yn,
+		info_mnbd_dsag_clct_stt_bss_expln,
+	  	sens_info_hld_yn,
+		sens_info_indiv_agre_yn,
+		sens_info_hld_stt_bss_expln,
+		uii_hld_yn,
+		uii_indiv_agre_yn,
+	 	uii_hld_stt_bss_expln,
+		prvc_evl_trgt_yn,
+		hndl_pic_nm,
+		tdpty_splrcp_nm,
+		tdpty_pvsn_bss_expln,
+	  	tdpty_pvsn_mttr,
+		prvc_prcs_cnsgn_bzenty_nm,
+		prvc_cnsgn_ctrt_yn,
+		prvc_cnsgn_fact_indct_yn,
+	  	prps_excl_utztn_pvsn_yn,
+		prps_excl_utztn_pvsn_bss_expln,
+		reg_ymd,
+		rgtr_id,
+		mdfcn_ymd,
+		mdfr_id
 	 )
 	VALUES
 	(
-		#{docClsfNo}, (SELECT 'MPRV' || to_char(NOW(), 'YYYYMMDD') || coalesce(max(substring(prvc_file_hld_prst_no, 13)::integer)+1, 1) FROM tb_dr_m_prvc_file_hld_prst WHERE prvc_file_hld_prst_no LIKE 'MDOC' || to_char(NOW(), 'YYYYMMDD') || '%'), #{deptNm}, #{fileNm}, #{hldPrps}, #{clctSttBssExpln}, #{useDeptNm},
-	 	#{prvcPrcsMthdExpln}, #{hldPrdDfyrs}::NUMERIC, #{hldPrdMmCnt}::NUMERIC, #{infoMnbdPrvcMttr}, #{sttyAgtPrvcMttr},
-		#{rrnoClctYn}, #{rrnoClctSttBssExpln}, #{infoMnbdAgreYn}, #{infoMnbdDsagClctSttBssExpln},
-	  	#{sensInfoHldYn}, #{sensInfoIndivAgreYn}, #{sensInfoHldSttBssExpln}, #{uiiHldYn}, #{uiiIndivAgreYn},
-	 	#{uiiHldSttBssExpln}, #{prvcEvlTrgtYn}, #{hndlPicNm}, #{tdptySplrcpNm}, #{tdptyPvsnBssExpln},
-	  	#{tdptyPvsnMttr}, #{prvcPrcsCnsgnBzentyNm}, #{prvcCnsgnCtrtYn}, #{prvcCnsgnFactIndctYn},
-	  	#{prpsExclUtztnPvsnYn}, #{prpsExclUtztnPvsnBssExpln}, NOW(), #{rgtrId}, NOW(), #{mdfrId}
+		#{docClsfNo},
+		(SELECT 'MPRV' || to_char(NOW(), 'YYYYMMDD') || coalesce(max(substring(prvc_file_hld_prst_no, 13)::integer)+1,1) FROM <include refid="mainTable" /> WHERE prvc_file_hld_prst_no LIKE 'MDOC' || to_char(NOW(), 'YYYYMMDD') || '%'),
+		#{deptNm},
+		#{fileNm},
+		#{hldPrps},
+		#{clctSttBssExpln},
+		#{useDeptNm},
+		#{prvcPrcsMthdExpln},
+		#{hldPrdDfyrs}::NUMERIC,
+		#{hldPrdMmCnt}::NUMERIC,
+		#{infoMnbdPrvcMttr},
+		#{sttyAgtPrvcMttr},
+		#{rrnoClctYn},
+		#{rrnoClctSttBssExpln},
+		#{infoMnbdAgreYn},
+		#{infoMnbdDsagClctSttBssExpln},
+		#{sensInfoHldYn},
+		#{sensInfoIndivAgreYn},
+		#{sensInfoHldSttBssExpln},
+		#{uiiHldYn},
+		#{uiiIndivAgreYn},
+		#{uiiHldSttBssExpln},
+		#{prvcEvlTrgtYn},
+		#{hndlPicNm},
+		#{tdptySplrcpNm},
+		#{tdptyPvsnBssExpln},
+		#{tdptyPvsnMttr},
+		#{prvcPrcsCnsgnBzentyNm},
+		#{prvcCnsgnCtrtYn},
+		#{prvcCnsgnFactIndctYn},
+		#{prpsExclUtztnPvsnYn},
+		#{prpsExclUtztnPvsnBssExpln},
+		NOW(),
+		#{rgtrId},
+		NOW(),
+		#{mdfrId}
 	)
     </insert>
     
 
 	<update id="update">
-		UPDATE tb_dr_m_prvc_file_hld_prst
+		UPDATE <include refid="mainTable" />
 		SET
 			dept_nm = #{deptNm},
 			file_nm = #{fileNm},
@@ -110,7 +171,7 @@
 	
 	<delete id="delete">
 		DELETE FROM
-			tb_dr_m_prvc_file_hld_prst
+			<include refid="mainTable" />
 		WHERE
 			doc_clsf_no = #{docClsfNo}
 

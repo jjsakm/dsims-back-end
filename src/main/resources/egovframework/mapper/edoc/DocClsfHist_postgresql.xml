@@ -48,12 +48,15 @@
 		doc_clsf_hist.eqpmnt_nm
 	</sql>
 	
+	<sql id="mainTable">
+		tb_dr_h_doc_clsf
+	</sql>
 	<sql id="fromTables">
-		tb_dr_h_doc_clsf AS doc_clsf_hist
+		<include refid="mainTable" /> AS doc_clsf_hist
 	</sql>
 
     <insert id="insert" useGeneratedKeys="true" keyColumn="doc_clsf_hstry_no" keyProperty="docClsfHstryNo">
-    INSERT INTO tb_dr_h_doc_clsf
+    INSERT INTO <include refid="mainTable" />
 	(
 		doc_clsf_no,
 		doc_clsf_hstry_no,
@@ -101,7 +104,7 @@
 	VALUES
 	(
 		#{docClsfNo},
-		(SELECT 'HDOC' || to_char(NOW(), 'YYYYMMDD') || coalesce(max(substring(doc_clsf_hstry_no, 13)::integer)+1, 1) FROM tb_dr_h_doc_clsf WHERE doc_clsf_hstry_no LIKE 'HDOC' || to_char(NOW(), 'YYYYMMDD') || '%'),
+		(SELECT 'HDOC' || to_char(NOW(), 'YYYYMMDD') || coalesce(max(substring(doc_clsf_hstry_no, 13)::integer)+1, 1) FROM <include refid="mainTable" /> WHERE doc_clsf_hstry_no LIKE 'HDOC' || to_char(NOW(), 'YYYYMMDD') || '%'),
 		#{docClsfSeCd},
 		#{docClsfNm},
 		#{upDocClsfNo},
@@ -165,7 +168,7 @@
  	
 	<delete id="deleteByDocClsfNo">
 		DELETE FROM
-			tb_dr_h_doc_clsf
+			<include refid="mainTable" />
 		WHERE
 			doc_clsf_no = #{docClsfNo}
 	</delete>
