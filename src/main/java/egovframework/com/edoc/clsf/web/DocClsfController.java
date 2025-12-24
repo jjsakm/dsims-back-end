@@ -30,7 +30,9 @@ import egovframework.com.edoc.clsf.dto.request.DocClsfInsertRequestDto;
 import egovframework.com.edoc.clsf.dto.request.DocClsfSearchRequestDto;
 import egovframework.com.edoc.clsf.dto.request.DocClsfUpdateRequestDto;
 import egovframework.com.edoc.clsf.dto.request.PrvcFileHldPrstUpsertRequestDto;
+import egovframework.com.edoc.clsf.dto.request.exception.ChildrenExistException;
 import egovframework.com.edoc.clsf.dto.request.exception.DuplicateNameException;
+import egovframework.com.edoc.clsf.service.impl.DocClsfHistService;
 import egovframework.com.edoc.clsf.service.impl.DocClsfService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -52,6 +54,7 @@ public class DocClsfController {
 	private final EgovPropertyService propertyService;
 	private final ResultVoHelper resultVoHelper;
 	private final DocClsfService docClsfService;
+	private final DocClsfHistService docClsfHistService;
 
 	@Operation(summary = "대분류 조회", description = "대분류 조회", tags = { "DocClsfController" })
 	@GetMapping("/toplevel")
@@ -178,7 +181,8 @@ public class DocClsfController {
 	@Operation(summary = "문서분류 삭제", description = "문서분류를 삭제 처리", security = {
 			@SecurityRequirement(name = "Authorization") }, tags = { "DocClsfController" })
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "삭제 성공"),
-			@ApiResponse(responseCode = "403", description = "인가된 사용자가 아님") })
+			@ApiResponse(responseCode = "403", description = "인가된 사용자가 아님"),
+			@ApiResponse(responseCode = "409", description = "삭제 실패") })
 	@DeleteMapping(value = "/{docClsfNo}/delete")
 	public ResultVO delete(@PathVariable("docClsfNo") String docClsfNo) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -186,13 +190,46 @@ public class DocClsfController {
 		return resultVoHelper.buildFromMap(resultMap, ResponseCode.SUCCESS);
 	}
 	
+	@Operation(summary = "문서분류이력 조회", description = "문서분류이력을 조회", security = {
+			@SecurityRequirement(name = "Authorization") }, tags = { "DocClsfController" })
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "조회 성공"),
+			@ApiResponse(responseCode = "403", description = "인가된 사용자가 아님") })
+
+	@GetMapping(value = "/{docClsfNo}/history")
+	public ResultVO getHistory(@PathVariable("docClsfNo") String docClsfNo) throws Exception {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+
+		PaginationInfo paginationInfo = new PaginationInfo();
+
+		paginationInfo.setCurrentPageNo(1);
+		paginationInfo.setRecordCountPerPage(10);
+		paginationInfo.setPageSize(10);
+
+	//	paginationInfo.setTotalRecordCount(docClsfService.selectListTotCnt(searchRequestDto));
+
+		resultMap.put("list", docClsfHistService.selectListByDocClsfNo(docClsfNo));
+		resultMap.put("paginationInfo", paginationInfo);
+
+		return resultVoHelper.buildFromMap(resultMap, ResponseCode.SUCCESS);
+	}
+	
 
 	
 	@ExceptionHandler({DuplicateNameException.class})
 	@ResponseStatus(code = HttpStatus.CONFLICT)
-    public ResultVO DuplicateNameException(DuplicateNameException e) {
+    public ResultVO handleDuplicateNameException(DuplicateNameException e) {
         Map<String, String> errors = new HashMap<>();
         errors.put(e.getFieldName(), e.getMessage());
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("errors", errors);
+		return resultVoHelper.buildFromMap(resultMap, ResponseCode.INPUT_CHECK_ERROR);
+    }	
+	
+	@ExceptionHandler({ChildrenExistException.class})
+	@ResponseStatus(code = HttpStatus.CONFLICT)
+    public ResultVO handleChildrenExistException(ChildrenExistException e) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("message", e.getMessage());
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("errors", errors);
 		return resultVoHelper.buildFromMap(resultMap, ResponseCode.INPUT_CHECK_ERROR);

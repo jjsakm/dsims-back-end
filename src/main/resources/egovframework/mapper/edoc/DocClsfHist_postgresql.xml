@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.com.edoc.clsf.domain.repository.DocClsfHistMapper">
+	
+	<sql id="fields">
+		doc_clsf_hist.doc_clsf_no,
+		doc_clsf_hist.doc_clsf_hstry_no,
+		doc_clsf_hist.doc_clsf_se_cd,
+		doc_clsf_hist.doc_clsf_nm,
+		doc_clsf_hist.up_doc_clsf_no,
+		doc_clsf_hist.prvc_incl_yn,
+		doc_clsf_hist.use_en,
+		doc_clsf_hist.dept_nm,
+		doc_clsf_hist.file_nm,
+		doc_clsf_hist.hld_prps,
+		doc_clsf_hist.clct_stt_bss_expln,
+		doc_clsf_hist.use_dept_nm,
+		doc_clsf_hist.prvc_prcs_mthd_expln,
+		doc_clsf_hist.hld_prd_dfyrs,
+		doc_clsf_hist.hld_prd_mm_cnt,
+		doc_clsf_hist.info_mnbd_prvc_mttr,
+		doc_clsf_hist.stty_agt_prvc_mttr,
+		doc_clsf_hist.rrno_clct_yn,
+		doc_clsf_hist.rrno_clct_stt_bss_expln,
+		doc_clsf_hist.info_mnbd_agre_yn,
+		doc_clsf_hist.info_mnbd_dsag_clct_stt_bss_expln,
+		doc_clsf_hist.sens_info_hld_yn,
+		doc_clsf_hist.sens_info_indiv_agre_yn,
+		doc_clsf_hist.sens_info_hld_stt_bss_expln,
+		doc_clsf_hist.uii_hld_yn,
+		doc_clsf_hist.uii_indiv_agre_yn,
+		doc_clsf_hist.uii_hld_stt_bss_expln,
+		doc_clsf_hist.prvc_evl_trgt_yn,
+		doc_clsf_hist.hndl_pic_nm,
+		doc_clsf_hist.tdpty_splrcp_nm,
+		doc_clsf_hist.tdpty_pvsn_bss_expln,
+		doc_clsf_hist.tdpty_pvsn_mttr,
+		doc_clsf_hist.prvc_prcs_cnsgn_bzenty_nm,
+		doc_clsf_hist.prvc_cnsgn_ctrt_yn,
+		doc_clsf_hist.prvc_cnsgn_fact_indct_yn,
+		doc_clsf_hist.prps_excl_utztn_pvsn_yn,
+		doc_clsf_hist.prps_excl_utztn_pvsn_bss_expln,
+		doc_clsf_hist.act_cn,
+		doc_clsf_hist.acsr_ip_addr,
+		doc_clsf_hist.reg_ymd,
+		doc_clsf_hist.rgtr_id,
+		doc_clsf_hist.eqpmnt_nm
+	</sql>
+	
+	<sql id="fromTables">
+		tb_dr_h_doc_clsf AS doc_clsf_hist
+	</sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="doc_clsf_hstry_no" keyProperty="docClsfHstryNo">
+    INSERT INTO tb_dr_h_doc_clsf
+	(
+		doc_clsf_no,
+		doc_clsf_hstry_no,
+		doc_clsf_se_cd,
+		doc_clsf_nm,
+		up_doc_clsf_no,
+		prvc_incl_yn,
+		use_en,
+		dept_nm,
+		file_nm,
+		hld_prps,
+		clct_stt_bss_expln,
+		use_dept_nm,
+		prvc_prcs_mthd_expln,
+		hld_prd_dfyrs,
+		hld_prd_mm_cnt,
+		info_mnbd_prvc_mttr,
+		stty_agt_prvc_mttr,
+		rrno_clct_yn,
+		rrno_clct_stt_bss_expln,
+		info_mnbd_agre_yn,
+		info_mnbd_dsag_clct_stt_bss_expln,
+		sens_info_hld_yn,
+		sens_info_indiv_agre_yn,
+		sens_info_hld_stt_bss_expln,
+		uii_hld_yn,
+		uii_indiv_agre_yn,
+		uii_hld_stt_bss_expln,
+		prvc_evl_trgt_yn,
+		hndl_pic_nm,
+		tdpty_splrcp_nm,
+		tdpty_pvsn_bss_expln,
+		tdpty_pvsn_mttr,
+		prvc_prcs_cnsgn_bzenty_nm,
+		prvc_cnsgn_ctrt_yn,
+		prvc_cnsgn_fact_indct_yn,
+		prps_excl_utztn_pvsn_yn,
+		prps_excl_utztn_pvsn_bss_expln,
+		act_cn,
+		acsr_ip_addr,
+		reg_ymd,
+		rgtr_id,
+		eqpmnt_nm
+	 )
+	VALUES
+	(
+		#{docClsfNo},
+		(SELECT 'HDOC' || to_char(NOW(), 'YYYYMMDD') || coalesce(max(substring(doc_clsf_hstry_no, 13)::integer)+1, 1) FROM tb_dr_h_doc_clsf WHERE doc_clsf_hstry_no LIKE 'HDOC' || to_char(NOW(), 'YYYYMMDD') || '%'),
+		#{docClsfSeCd},
+		#{docClsfNm},
+		#{upDocClsfNo},
+		#{prvcInclYn},
+		#{useEn},
+		#{deptNm},
+		#{fileNm},
+		#{hldPrps},
+		#{clctSttBssExpln},
+		#{useDeptNm},
+		#{prvcPrcsMthdExpln},
+		#{hldPrdDfyrs}::NUMERIC,
+		#{hldPrdMmCnt}::NUMERIC,
+		#{infoMnbdPrvcMttr},
+		#{sttyAgtPrvcMttr},
+		#{rrnoClctYn},
+		#{rrnoClctSttBssExpln},
+		#{infoMnbdAgreYn},
+		#{infoMnbdDsagClctSttBssExpln},
+		#{sensInfoHldYn},
+		#{sensInfoIndivAgreYn},
+		#{sensInfoHldSttBssExpln},
+		#{uiiHldYn},
+		#{uiiIndivAgreYn},
+		#{uiiHldSttBssExpln},
+		#{prvcEvlTrgtYn},
+		#{hndlPicNm},
+		#{tdptySplrcpNm},
+		#{tdptyPvsnBssExpln},
+		#{tdptyPvsnMttr},
+		#{prvcPrcsCnsgnBzentyNm},
+		#{prvcCnsgnCtrtYn},
+		#{prvcCnsgnFactIndctYn},
+		#{prpsExclUtztnPvsnYn},
+		#{prpsExclUtztnPvsnBssExpln},
+		#{actCn},
+		#{acsrIpAddr},
+		NOW(),
+		#{rgtrId},
+		#{eqpmntNm}		
+	)
+    </insert>
+
+	<select id="select" resultType="egovframework.com.edoc.clsf.domain.model.DocClsfHistVO">
+		SELECT
+			<include refid="fields"/>
+		FROM
+			<include refid="fromTables"/>
+		WHERE
+			doc_clsf_hist.doc_clsf_hstry_no = #{docClsfHistNo}
+ 	</select>
+
+	<select id="selectListByDocClsfNo" resultType="egovframework.com.edoc.clsf.domain.model.DocClsfHistVO">
+		SELECT
+			<include refid="fields"/>
+		FROM
+			<include refid="fromTables"/>
+		WHERE
+			doc_clsf_hist.doc_clsf_no = #{docClsfNo}
+ 	</select>
+ 	
+	<delete id="deleteByDocClsfNo">
+		DELETE FROM
+			tb_dr_h_doc_clsf
+		WHERE
+			doc_clsf_no = #{docClsfNo}
+	</delete>
+		
+
+</mapper>

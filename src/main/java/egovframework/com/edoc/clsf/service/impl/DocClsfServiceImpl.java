@@ -6,13 +6,16 @@ import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import egovframework.com.edoc.clsf.domain.model.DocClsfHistVO;
 import egovframework.com.edoc.clsf.domain.model.DocClsfVO;
 import egovframework.com.edoc.clsf.domain.repository.DocClsfMapper;
 import egovframework.com.edoc.clsf.domain.repository.PrvcFileHldPrstMapper;
 import egovframework.com.edoc.clsf.dto.request.DocClsfInsertRequestDto;
 import egovframework.com.edoc.clsf.dto.request.DocClsfSearchRequestDto;
 import egovframework.com.edoc.clsf.dto.request.DocClsfUpdateRequestDto;
+import egovframework.com.edoc.clsf.dto.request.exception.ChildrenExistException;
 import egovframework.com.edoc.clsf.dto.request.exception.DuplicateNameException;
+import egovframework.com.edoc.clsf.enums.DocClsfHistActCn;
 import egovframework.com.edoc.clsf.enums.DocClsfSeCd;
 import lombok.RequiredArgsConstructor;
 
@@ -24,8 +27,8 @@ public class DocClsfServiceImpl extends EgovAbstractServiceImpl implements DocCl
 	private final DocClsfMapper docClsfMapper;
 
 	private final PrvcFileHldPrstMapper prvcFileHldPrstMapper;
-
-	/* private final DocClsfHistMapper docClsfHistMapper; */
+	
+	private final DocClsfHistService docClsfHistService;
 
 	@Override
 	public DocClsfVO select(String docClsfNo) {
@@ -44,7 +47,6 @@ public class DocClsfServiceImpl extends EgovAbstractServiceImpl implements DocCl
 
 	@Override
 	public List<DocClsfVO> selectList(DocClsfSearchRequestDto searchRequestDto) {
-		// TODO: 정렬 추가 필요, 대/중/소 그룹.. 등록순
 		return docClsfMapper.selectList(searchRequestDto);
 	}
 
@@ -62,13 +64,15 @@ public class DocClsfServiceImpl extends EgovAbstractServiceImpl implements DocCl
 			insertRequestDto.setUseEn("Y");
 			insertRequestDto.setPrvcInclYn("N");
 		}
-		int docClsfInsertRet = docClsfMapper.insert(insertRequestDto);
-		if (docClsfInsertRet != 0 && isPrvcIncl(insertRequestDto.getDocClsfSeCd(), insertRequestDto.getPrvcInclYn())) {
-			insertRequestDto.getPrvcFileHldPrst().setDocClsfNo(insertRequestDto.getDocClsfNo());
-			prvcFileHldPrstMapper.insert(insertRequestDto.getPrvcFileHldPrst());
+		int ret = docClsfMapper.insert(insertRequestDto);
+		if (ret != 0) {
+			if (isPrvcIncl(insertRequestDto.getDocClsfSeCd(), insertRequestDto.getPrvcInclYn())) {
+				insertRequestDto.getPrvcFileHldPrst().setDocClsfNo(insertRequestDto.getDocClsfNo());
+				prvcFileHldPrstMapper.insert(insertRequestDto.getPrvcFileHldPrst());
+			}
+			createDocClsfHist(docClsfMapper.select(insertRequestDto.getDocClsfNo()), DocClsfHistActCn.INSERT);
 		}
-//		createDocClsfHist(docClsfNo);
-		return docClsfInsertRet;
+		return ret;
 	}
 
 	private boolean isDuplicatedName(String docClsfSeCd, String docClsfNm) {
@@ -98,41 +102,40 @@ public class DocClsfServiceImpl extends EgovAbstractServiceImpl implements DocCl
 			} else {
 				prvcFileHldPrstMapper.delete(old.getDocClsfNo());
 			}
+			createDocClsfHist(old, DocClsfHistActCn.UPDATE);
 		}
 		return ret;
 	}
 
 	@Override
 	public void delete(String docClsfNo) {
-		DocClsfVO docClsf = docClsfMapper.select(docClsfNo);
-		if (DocClsfSeCd.S.name().equals(docClsf.getDocClsfSeCd())) {
+		DocClsfVO old = docClsfMapper.select(docClsfNo);
+		if (DocClsfSeCd.S.name().equals(old.getDocClsfSeCd())) {
 			// TODO : 해당 문서분류 사용하는 전자문서 있는지 체크 후 처리 로직 추가 필요
 			deleteLeafDocClsf(docClsfNo);
-			// TODO : createDocClsfHist
 		} else {
 			List<DocClsfVO> children = getChildren(docClsfNo);
 			if (!children.isEmpty()) {
-				for (DocClsfVO child : children) {
-					delete(child.getDocClsfNo());
-				}
+				throw new ChildrenExistException("하위 문서분류가 존재합니다.");
 			}
 			docClsfMapper.delete(docClsfNo);
-			// TODO : createDocClsfHist
 		}
+		createDocClsfHist(old, DocClsfHistActCn.DELETE);
 	}
 
 	private void deleteLeafDocClsf(String docClsfNo) {
 		prvcFileHldPrstMapper.delete(docClsfNo);
 		docClsfMapper.delete(docClsfNo);
 	}
-	/*
-	 * private void createDocClsfHist(String docClsfNo) { DocClsfVO docClsf =
-	 * docClsfMapper.select(docClsfNo); DocClsfHistVO docClsfHist = new
-	 * DocClsfHistVO(); docClsfHist.setDocClsf(docClsf);
-	 * docClsfHist.setMdfrDetail("문서분류 수정");
-	 * docClsfHist.setMdfrIp("111.111.111.111"); docClsfHist.setMdfrEqmt("PC");
-	 * docClsfHistMapper.insert(docClsfHist); }
-	 */
+
+	private void createDocClsfHist(DocClsfVO docClsf, DocClsfHistActCn histActCn) {
+		DocClsfHistVO docClsfHist = DocClsfHistVO.from(docClsf);
+		docClsfHist.setAcsrIpAddr("111.111.111.111");
+		docClsfHist.setActCn(histActCn.getName());
+		docClsfHist.setEqpmntNm("PC");
+		docClsfHist.setRgtrId("tester");
+		docClsfHistService.insert(docClsfHist);
+	}
 
 	private boolean isPrvcIncl(String docClsfSeCd, String prvcInclYn) {
 		return "Y".equals(prvcInclYn) && DocClsfSeCd.S.name().equals(docClsfSeCd);
