@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.ResponseCode;
@@ -61,7 +60,7 @@ public class EgovBBSUseInfoManageApiController {
 	private final EgovBBSUseInfoManageService bbsUseService;
 	private final EgovPropertyService propertyService;
 	private final EgovBBSAttributeManageService bbsAttrbService;
-	private final DefaultBeanValidator beanValidator;
+	//private final DefaultBeanValidator beanValidator;
 	private final ResultVoHelper resultVoHelper;
 
 	/**
@@ -217,7 +216,7 @@ public class EgovBBSUseInfoManageApiController {
 		@Parameter(hidden = true) @AuthenticationPrincipal LoginVO loginVO
 	) throws Exception {
 
-		beanValidator.validate(bdUseVO, bindingResult);
+		//beanValidator.validate(bdUseVO, bindingResult);
 
 		if (bindingResult.hasErrors()) {
 			return resultVoHelper.buildFromResultVO(new ResultVO(), ResponseCode.INPUT_CHECK_ERROR);

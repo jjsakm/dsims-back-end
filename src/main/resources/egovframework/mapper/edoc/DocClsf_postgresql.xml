@@ -206,4 +206,23 @@
 					AND dc.use_en = #{useEn}
 				</if>
 	</select>
+	
+	<sql id="countQuery">
+		SELECT 
+			COUNT(*)
+		FROM
+			tb_dr_m_doc_clsf
+	</sql>
+
+	<select id="countByDocClsfNm" resultType="int">
+		<include refid="countQuery" />
+		WHERE
+			 doc_clsf_se_cd = #{docClsfSeCd} AND doc_clsf_nm = #{docClsfNm}
+	</select>
+
+	<select id="countByDocClsfNmExcludingDocClsfNo" resultType="int">
+		<include refid="countQuery" />
+		WHERE
+			 doc_clsf_se_cd = #{docClsfSeCd} AND doc_clsf_nm = #{docClsfNm} AND doc_clsf_no != #{docClsfNo}
+	</select>
 </mapper>

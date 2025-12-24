@@ -6,9 +6,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import egovframework.let.cop.bbs.dto.request.BbsManageDetailBoardRequestDTO;
-import egovframework.let.cop.bbs.dto.response.BbsManageDetailResponseDTO;
-import egovframework.let.cop.bbs.dto.response.BbsManageListResponseDTO;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.ResponseCode;
@@ -35,9 +31,12 @@ import egovframework.com.cmm.service.ResultVO;
 import egovframework.com.cmm.util.ResultVoHelper;
 import egovframework.com.jwt.EgovJwtTokenUtil;
 import egovframework.let.cop.bbs.domain.model.BoardVO;
-import egovframework.let.cop.bbs.dto.request.BbsSearchRequestDTO;
 import egovframework.let.cop.bbs.dto.request.BbsManageDeleteBoardRequestDTO;
+import egovframework.let.cop.bbs.dto.request.BbsManageDetailBoardRequestDTO;
+import egovframework.let.cop.bbs.dto.request.BbsSearchRequestDTO;
 import egovframework.let.cop.bbs.dto.response.BbsFileAtchResponseDTO;
+import egovframework.let.cop.bbs.dto.response.BbsManageDetailResponseDTO;
+import egovframework.let.cop.bbs.dto.response.BbsManageListResponseDTO;
 import egovframework.let.cop.bbs.enums.BbsDetailRequestType;
 import egovframework.let.cop.bbs.service.EgovBBSAttributeManageService;
 import egovframework.let.cop.bbs.service.EgovBBSManageService;
@@ -86,7 +85,7 @@ public class EgovBBSManageApiController {
     private final EgovFileMngService fileMngService;
     private final EgovPropertyService propertyService;
     private final EgovBBSAttributeManageService bbsAttrbService;
-    private final DefaultBeanValidator beanValidator;
+    //private final DefaultBeanValidator beanValidator;
 	
 	/**
 	 * 게시판 마스터 상세내용을 조회한다.
@@ -252,7 +251,7 @@ public class EgovBBSManageApiController {
 		LoginVO user = extractUserFromJwt(request);
 		String atchFileId = boardVO.getAtchFileId().replaceAll("\\s", "");
 
-		beanValidator.validate(boardVO, bindingResult);
+		//beanValidator.validate(boardVO, bindingResult);
 		if (bindingResult.hasErrors()) {
 			return resultVoHelper.buildFromResultVO(new ResultVO(), ResponseCode.INPUT_CHECK_ERROR);
 		}
@@ -312,7 +311,7 @@ public class EgovBBSManageApiController {
 		throws Exception {
 		LoginVO user = extractUserFromJwt(request);
 		
-		beanValidator.validate(boardVO, bindingResult);
+		//beanValidator.validate(boardVO, bindingResult);
 		if (bindingResult.hasErrors()) {
 
 			return resultVoHelper.buildFromResultVO(new ResultVO(), ResponseCode.INPUT_CHECK_ERROR);
@@ -368,7 +367,7 @@ public class EgovBBSManageApiController {
 		ResultVO resultVO = new ResultVO();
 		LoginVO user = extractUserFromJwt(request);
 
-		beanValidator.validate(boardVO, bindingResult);
+		//beanValidator.validate(boardVO, bindingResult);
 		if (bindingResult.hasErrors()) {
 			resultVO.setResultCode(ResponseCode.INPUT_CHECK_ERROR.getCode());
 			resultVO.setResultMessage(ResponseCode.INPUT_CHECK_ERROR.getMessage());

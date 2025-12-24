@@ -12,6 +12,7 @@ import egovframework.com.edoc.clsf.domain.repository.PrvcFileHldPrstMapper;
 import egovframework.com.edoc.clsf.dto.request.DocClsfInsertRequestDto;
 import egovframework.com.edoc.clsf.dto.request.DocClsfSearchRequestDto;
 import egovframework.com.edoc.clsf.dto.request.DocClsfUpdateRequestDto;
+import egovframework.com.edoc.clsf.dto.request.exception.DuplicateNameException;
 import egovframework.com.edoc.clsf.enums.DocClsfSeCd;
 import lombok.RequiredArgsConstructor;
 
@@ -43,6 +44,7 @@ public class DocClsfServiceImpl extends EgovAbstractServiceImpl implements DocCl
 
 	@Override
 	public List<DocClsfVO> selectList(DocClsfSearchRequestDto searchRequestDto) {
+		// TODO: 정렬 추가 필요, 대/중/소 그룹.. 등록순
 		return docClsfMapper.selectList(searchRequestDto);
 	}
 
@@ -53,6 +55,9 @@ public class DocClsfServiceImpl extends EgovAbstractServiceImpl implements DocCl
 
 	@Override
 	public int insert(DocClsfInsertRequestDto insertRequestDto) {
+		if (isDuplicatedName(insertRequestDto.getDocClsfSeCd(), insertRequestDto.getDocClsfNm())) {
+			throw new DuplicateNameException("docClsfNm", "값이 중복입니다.");
+		}
 		if (!DocClsfSeCd.S.name().equals(insertRequestDto.getDocClsfSeCd())) {
 			insertRequestDto.setUseEn("Y");
 			insertRequestDto.setPrvcInclYn("N");
@@ -66,9 +71,21 @@ public class DocClsfServiceImpl extends EgovAbstractServiceImpl implements DocCl
 		return docClsfInsertRet;
 	}
 
+	private boolean isDuplicatedName(String docClsfSeCd, String docClsfNm) {
+		return docClsfMapper.countByDocClsfNm(docClsfSeCd, docClsfNm) > 0;
+	}
+
+	private boolean isDuplicatedNameExcludingDocClsfNo(String docClsfSeCd, String docClsfNm, String docClsfNo) {
+		return docClsfMapper.countByDocClsfNmExcludingDocClsfNo(docClsfSeCd, docClsfNm, docClsfNo) > 0;
+	}
+
 	@Override
 	public int update(DocClsfUpdateRequestDto updateRequestDto) {
 		DocClsfVO old = docClsfMapper.select(updateRequestDto.getDocClsfNo());
+		if (isDuplicatedNameExcludingDocClsfNo(old.getDocClsfSeCd(), updateRequestDto.getDocClsfNm(),
+				old.getDocClsfNo())) {
+			throw new DuplicateNameException("docClsfNm", "값이 중복입니다.");
+		}
 		int ret = docClsfMapper.update(updateRequestDto);
 		if (ret != 0) {
 			if (isPrvcIncl(old.getDocClsfSeCd(), updateRequestDto.getPrvcInclYn())) {
@@ -78,9 +95,9 @@ public class DocClsfServiceImpl extends EgovAbstractServiceImpl implements DocCl
 				} else {
 					prvcFileHldPrstMapper.insert(updateRequestDto.getPrvcFileHldPrst());
 				}
+			} else {
+				prvcFileHldPrstMapper.delete(old.getDocClsfNo());
 			}
-		} else {
-			prvcFileHldPrstMapper.delete(old.getDocClsfNo());
 		}
 		return ret;
 	}

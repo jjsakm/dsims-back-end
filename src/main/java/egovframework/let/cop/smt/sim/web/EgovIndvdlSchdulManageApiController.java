@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.LoginVO;
@@ -66,7 +65,7 @@ import lombok.RequiredArgsConstructor;
 @Tag(name="EgovIndvdlSchdulManageApiController",description = "일정관리")
 public class EgovIndvdlSchdulManageApiController {
 
-	private final DefaultBeanValidator beanValidator;
+	//private final DefaultBeanValidator beanValidator;
 	private final EgovIndvdlSchdulManageService egovIndvdlSchdulManageService;
 	private final EgovCmmUseService cmmUseService;
 	private final EgovFileMngService fileMngService;
@@ -176,7 +175,7 @@ public class EgovIndvdlSchdulManageApiController {
 	) throws Exception {
 
 		//서버  validate 체크
-		beanValidator.validate(indvdlSchdulManageVO, bindingResult);
+		//beanValidator.validate(indvdlSchdulManageVO, bindingResult);
 		if (bindingResult.hasErrors()) {
 			return resultVoHelper.buildFromResultVO(new ResultVO(), ResponseCode.INPUT_CHECK_ERROR);
 		}
@@ -342,7 +341,7 @@ public class EgovIndvdlSchdulManageApiController {
 
 		//서버  validate 체크
 		indvdlSchdulManageVO.setSchdulId(schdulId);
-		beanValidator.validate(indvdlSchdulManageVO, bindingResult);
+		//beanValidator.validate(indvdlSchdulManageVO, bindingResult);
 		if (bindingResult.hasErrors()) {
 			return resultVoHelper.buildFromMap(resultMap, ResponseCode.INPUT_CHECK_ERROR);
 		}

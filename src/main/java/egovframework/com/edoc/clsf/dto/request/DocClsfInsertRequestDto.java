@@ -18,7 +18,7 @@ public class DocClsfInsertRequestDto implements Serializable {
 	 */
 	private static final long serialVersionUID = -6478162443783502376L;
 
-	@Schema(description = "문서분류번호", example = "")
+	@Schema(description = "문서분류번호", example = "", hidden = true)
 	private String docClsfNo; // 문서분류번호
 	
 	@Schema(description = "문서분류 구분코드(L:대,M:중,S:소)", example = "")

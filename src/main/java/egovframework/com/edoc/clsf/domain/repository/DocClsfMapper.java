@@ -27,4 +27,8 @@ public interface DocClsfMapper {
 	int update(DocClsfUpdateRequestDto updateRequestDto);
 
 	int delete(String docClsfNo);
+
+	int countByDocClsfNm(String docClsfSeCd, String docClsfNm);
+
+	int countByDocClsfNmExcludingDocClsfNo(String docClsfSeCd, String docClsfNm, String docClsfNo);
 }

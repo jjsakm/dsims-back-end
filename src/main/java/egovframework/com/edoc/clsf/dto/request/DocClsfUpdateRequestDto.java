@@ -2,6 +2,8 @@ package egovframework.com.edoc.clsf.dto.request;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotBlank;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -20,9 +22,11 @@ public class DocClsfUpdateRequestDto implements Serializable {
 	private static final long serialVersionUID = 6800848624760409230L;
 
 	@Schema(description = "문서분류번호", example = "")
+	@NotBlank(message = "docClsfm is required")
 	private String docClsfNo; // 문서분류번호
 	
 	@Schema(description = "문서분류명", example = "")
+	@NotBlank(message = "docClsfm is required")
 	private String docClsfNm; // 문서분류명
 	
 	@Schema(description = "상위문서분류번호", example = "")

@@ -4,17 +4,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import egovframework.com.cmm.ResponseCode;
@@ -24,6 +30,7 @@ import egovframework.com.edoc.clsf.dto.request.DocClsfInsertRequestDto;
 import egovframework.com.edoc.clsf.dto.request.DocClsfSearchRequestDto;
 import egovframework.com.edoc.clsf.dto.request.DocClsfUpdateRequestDto;
 import egovframework.com.edoc.clsf.dto.request.PrvcFileHldPrstUpsertRequestDto;
+import egovframework.com.edoc.clsf.dto.request.exception.DuplicateNameException;
 import egovframework.com.edoc.clsf.service.impl.DocClsfService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -115,6 +122,7 @@ public class DocClsfController {
 			@SecurityRequirement(name = "Authorization") }, tags = { "DocClsfController" })
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "등록 성공"),
 			@ApiResponse(responseCode = "403", description = "인가된 사용자가 아님"),
+			@ApiResponse(responseCode = "409", description = "같은 문서분류명 있음"),
 			@ApiResponse(responseCode = "900", description = "입력값 무결성 오류") })
 	@PostMapping("/add")
 	public ResultVO insertClsf(@RequestBody DocClsfInsertRequestDto docClsfInsertRequestDto,
@@ -147,17 +155,11 @@ public class DocClsfController {
 			@SecurityRequirement(name = "Authorization") }, tags = { "DocClsfController" })
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "수정 성공"),
 			@ApiResponse(responseCode = "403", description = "인가된 사용자가 아님"),
+			@ApiResponse(responseCode = "409", description = "같은 문서분류명 있음"),
 			@ApiResponse(responseCode = "900", description = "입력값 무결성 오류") })
 	@PostMapping("/update")
-	public ResultVO updateClsf(@RequestBody DocClsfUpdateRequestDto docClsfUpdateRequestDto,
-			BindingResult bindingResult) throws Exception {
+	public ResultVO updateClsf(@Valid @RequestBody DocClsfUpdateRequestDto docClsfUpdateRequestDto) throws Exception {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-
-		if (bindingResult.hasErrors()) {
-
-			resultMap.put("resultMsg", "수정 실패");
-			return resultVoHelper.buildFromMap(resultMap, ResponseCode.SAVE_ERROR);
-		}
 
 		docClsfUpdateRequestDto.setMdfrId("tester");
 		PrvcFileHldPrstUpsertRequestDto prvcFieldHldPrst = docClsfUpdateRequestDto.getPrvcFileHldPrst();
@@ -183,4 +185,30 @@ public class DocClsfController {
 		docClsfService.delete(docClsfNo);
 		return resultVoHelper.buildFromMap(resultMap, ResponseCode.SUCCESS);
 	}
+	
+
+	
+	@ExceptionHandler({DuplicateNameException.class})
+	@ResponseStatus(code = HttpStatus.CONFLICT)
+    public ResultVO DuplicateNameException(DuplicateNameException e) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put(e.getFieldName(), e.getMessage());
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("errors", errors);
+		return resultVoHelper.buildFromMap(resultMap, ResponseCode.INPUT_CHECK_ERROR);
+    }
+	
+	@ExceptionHandler({MethodArgumentNotValidException.class})
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public ResultVO handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        Map<String, String> errors = new HashMap<>();
+        e.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("errors", errors);
+		return resultVoHelper.buildFromMap(resultMap, ResponseCode.INPUT_CHECK_ERROR);
+    }
 }

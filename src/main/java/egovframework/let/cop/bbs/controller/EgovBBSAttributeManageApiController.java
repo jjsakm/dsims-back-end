@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.LoginVO;
@@ -25,8 +24,8 @@ import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.service.IntermediateResultVO;
 import egovframework.let.cop.bbs.dto.request.BbsAttributeInsertRequestDTO;
-import egovframework.let.cop.bbs.dto.request.BbsSearchRequestDTO;
 import egovframework.let.cop.bbs.dto.request.BbsAttributeUpdateRequestDTO;
+import egovframework.let.cop.bbs.dto.request.BbsSearchRequestDTO;
 import egovframework.let.cop.bbs.dto.response.BbsAttributeDetailResponseDTO;
 import egovframework.let.cop.bbs.dto.response.BbsAttributeListResponseDTO;
 import egovframework.let.cop.bbs.dto.response.BbsAttributeResponseDTO;
@@ -71,7 +70,7 @@ public class EgovBBSAttributeManageApiController {
 	private final EgovBBSAttributeManageService bbsAttrbService;
 	private final EgovCmmUseService cmmUseService;
 	private final EgovPropertyService propertyService;
-	private final DefaultBeanValidator beanValidator;
+	//private final DefaultBeanValidator beanValidator;
 
 	/**
 	 * 게시판 마스터 목록을 조회한다.
@@ -167,7 +166,7 @@ public class EgovBBSAttributeManageApiController {
 	)
 		throws Exception {
 
-		beanValidator.validate(bbsAttributeInsertRequestDTO, bindingResult);
+		//beanValidator.validate(bbsAttributeInsertRequestDTO, bindingResult);
 		
 		BbsAttributeResponseDTO response = new BbsAttributeResponseDTO();
 		
@@ -260,7 +259,7 @@ public class EgovBBSAttributeManageApiController {
 										BindingResult bindingResult,
 										@Parameter(hidden = true) @AuthenticationPrincipal LoginVO loginVO
 										) throws Exception {
-		beanValidator.validate(bbsAttributeUpdateRequestDTO, bindingResult);
+		//beanValidator.validate(bbsAttributeUpdateRequestDTO, bindingResult);
 
 		if (bindingResult.hasErrors()) {
 			String bbsId = bbsAttributeUpdateRequestDTO.getBbsId();
