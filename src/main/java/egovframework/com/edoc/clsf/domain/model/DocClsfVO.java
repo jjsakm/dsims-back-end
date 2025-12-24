@@ -29,7 +29,25 @@ public class DocClsfVO implements Serializable {
 	private String docClsfNm; // 문서분류명
 
 	@Schema(description = "상위문서분류번호", example = "")
-	private String upDocClsfNo; // 상위문서분류번호
+	private String upDocClsfNo; // 상위문서분류번호	@Schema(description = "대분류 번호", example="")
+
+	@Schema(description = "대분류 번호", example="")
+	private String docLclsfNo;
+	
+	@Schema(description = "중분류 번호", example="")
+	private String docMclsfNo;
+
+	@Schema(description = "소분류 번호", example="")
+    private String docSclsfNo;
+	
+	@Schema(description = "대분류명", example="")
+	private String docLclsfNm;
+	
+	@Schema(description = "중분류명", example="")
+	private String docMclsfNm;
+
+	@Schema(description = "소분류명", example="")
+    private String docSclsfNm;
 
 	@Schema(description = "개인정보 포함여부(Y:포함, N:미포함)", example = "")
 	private String prvcInclYn; // 개인정보 포함여부(Y:포함, N:미포함)
